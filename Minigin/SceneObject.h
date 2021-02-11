@@ -5,7 +5,7 @@ namespace dae
 	{
 	public:
 		virtual void Update() = 0;
-		virtual void Render() const = 0;
+		virtual void Render() const;
 
 		SceneObject() = default;
 		virtual ~SceneObject() = default;
@@ -14,4 +14,8 @@ namespace dae
 		SceneObject& operator=(const SceneObject& other) = delete;
 		SceneObject& operator=(SceneObject&& other) = delete;
 	};
+
+	inline void SceneObject::Render() const
+	{
+	}
 }
