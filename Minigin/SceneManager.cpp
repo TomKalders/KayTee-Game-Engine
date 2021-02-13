@@ -8,7 +8,7 @@ void dae::SceneManager::Update(float dt)
 
 	for(auto& scene : m_Scenes)
 	{
-		scene->Update();
+		scene->Update(dt);
 	}
 }
 

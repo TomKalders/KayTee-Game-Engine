@@ -1,11 +1,32 @@
 ﻿#include "MiniginPCH.h"
 #include "BaseComponent.h"
+#include "GameObject.h"
 
-BaseComponent::BaseComponent()
+dae::BaseComponent::BaseComponent()
+	: m_pParent(nullptr)
 {
 	
 }
 
-BaseComponent::~BaseComponent()
+dae::BaseComponent::BaseComponent(GameObject* parent)
+	: m_pParent(parent)
 {
+}
+
+dae::BaseComponent::~BaseComponent()
+{
+}
+
+void dae::BaseComponent::Update(float dt)
+{
+	dt;
+}
+
+void dae::BaseComponent::Render() const
+{
+}
+
+void dae::BaseComponent::SetParent(GameObject* parent)
+{
+	m_pParent = parent;
 }
