@@ -1,4 +1,8 @@
 #pragma once
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/vec3.hpp>
+#pragma warning(pop)
 #include "BaseComponent.h"
 
 namespace dae
@@ -10,8 +14,8 @@ namespace dae
 	class TextComponent final: public BaseComponent
 	{
 	public:
-		TextComponent(const std::string& text, const std::shared_ptr<Font>& font);
-		virtual ~TextComponent();
+		TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const glm::vec3& color = {255, 255, 255});
+		virtual ~TextComponent() = default;
 		TextComponent(const TextComponent& other) = delete;
 		TextComponent(TextComponent&& other) = delete;
 		TextComponent& operator=(const TextComponent& other) = delete;
@@ -20,14 +24,14 @@ namespace dae
 		void Update(float dt) override;
 		void Render() const override;
 
-		void SetParent(GameObject* pParent) override;
-		void SetText(const std::string & text);
+		void SetText(const std::string& text);
+		void SetColor(const glm::vec3& color);
 
 	private:
 		bool m_NeedsUpdate;
 		std::string m_Text;
+		glm::tvec3<uint8_t> m_Color;
 		std::shared_ptr<Font> m_Font;
-		TextureComponent* m_pTextureComp;
 	};
 }
 

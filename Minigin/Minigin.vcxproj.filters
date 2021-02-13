@@ -75,6 +75,9 @@
     <ClInclude Include="Components.h">
       <Filter>Framework\Components</Filter>
     </ClInclude>
+    <ClInclude Include="TimeComponent.h">
+      <Filter>Framework</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -124,6 +127,9 @@
     </ClCompile>
     <ClCompile Include="TextureComponent.cpp">
       <Filter>Framework\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="TimeComponent.cpp">
+      <Filter>Game Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

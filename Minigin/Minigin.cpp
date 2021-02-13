@@ -45,21 +45,29 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto go = std::make_shared<GameObject>();
-	go->AddComponent(new TextureComponent{"background.jpg"});
-	scene.Add(go);
+	auto goBackground = std::make_shared<GameObject>();
+	goBackground->AddComponent(new TextureComponent{"background.jpg"});
+	scene.Add(goBackground);
 
-	go = std::make_shared<GameObject>();
+	auto goLogo = std::make_shared<GameObject>();
+	goLogo->GetComponent<Transform>()->SetPosition({ 216, 180, 0 });
+	
+	goLogo->AddComponent(new TextureComponent{ "logo.png" });
+	scene.Add(goLogo);
+	
+	auto goText = std::make_shared<GameObject>();
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
-	go->GetComponent<Transform>()->SetPosition({ 216, 180, 0 });
-	
-	go->AddComponent(new TextureComponent{ "logo.png" });
-	scene.Add(go);
-	
-	go = std::make_shared<GameObject>();
-	go->GetComponent<Transform>()->SetPosition({ 80, 20, 0});
-	go->AddComponent(new TextComponent{ "Programming 4 Assignment", font });
-	scene.Add(go);
+	goText->GetComponent<Transform>()->SetPosition({ 80, 20, 0});
+	goText->AddComponent(new TextureComponent{});
+	goText->AddComponent(new TextComponent{ "Programming 4 Assignment", font });
+	scene.Add(goText);
+
+	auto goFPSCounter = std::make_shared<GameObject>();
+	auto fontFPS = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+	goFPSCounter->AddComponent(new TextureComponent{});
+	goFPSCounter->AddComponent(new TextComponent{ "FPS:", fontFPS, {255, 255, 0} });
+	goFPSCounter->AddComponent(new TimeComponent{});
+	scene.Add(goFPSCounter);
 }
 
 void dae::Minigin::Cleanup()

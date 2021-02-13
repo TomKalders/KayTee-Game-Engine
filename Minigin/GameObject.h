@@ -1,7 +1,6 @@
 #pragma once
 #include "Transform.h"
 #include "SceneObject.h"
-//#include "BaseComponent.h"
 
 class BaseComponent;
 
