@@ -104,14 +104,17 @@ void dae::Minigin::Run()
 		//	auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
 		//	this_thread::sleep_for(sleepTime);
 		//}
+		bool running = true;
+		InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new QuitCommand(&running));
 
+		
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		while(doContinue)
 		{
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
-			doContinue = input.ProcessInput();
+			doContinue = input.ProcessInput() && running;
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 

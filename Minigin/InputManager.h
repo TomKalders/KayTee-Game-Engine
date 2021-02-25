@@ -4,10 +4,10 @@
 #include <Xinput.h>
 #pragma comment(lib, "XInput.lib")
 
+#include <SDL.h>
 #include <map>
 #include "Singleton.h"
 #include "Command.h"
-
 
 namespace dae
 {
@@ -53,7 +53,7 @@ namespace dae
 	class InputManager final : public Singleton<InputManager>
 	{
 	public:
-		~InputManager();
+		virtual ~InputManager();
 		
 		bool ProcessInput();
 		bool IsPressed(ControllerButton button);
@@ -61,7 +61,9 @@ namespace dae
 		bool IsHeld(ControllerButton button);
 
 		void AddCommand(ControllerButton button, InputType inputType, Command* command);
+		void AddCommand(SDL_Scancode SDLButton, InputType inputType, Command* command);
 
+		void Destroy();
 	private:
 		friend class Singleton<InputManager>;
 		InputManager() = default;
@@ -69,6 +71,7 @@ namespace dae
 		XINPUT_STATE m_CurrentState{};
 
 		std::map<ControllerButton, bool> m_PressedButtons;
-		std::map<ControllerButton, ButtonCommands*> m_ButtonCommands;
+		std::map<ControllerButton, ButtonCommands*> m_ControllerCommands;
+		std::map<SDL_Scancode, ButtonCommands*> m_KeyboardCommands;
 	};
 }
