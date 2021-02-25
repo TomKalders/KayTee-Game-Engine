@@ -1,5 +1,6 @@
 #pragma once
 #include "BaseComponent.h"
+#include "TextComponent.h"
 
 namespace dae
 {
@@ -19,9 +20,9 @@ namespace dae
 		int GetFPS() const;
 
 	private:
-		float m_Time;
 		int m_FPS;
-		int m_Frames;
+		TextComponent* m_TextComponent;
+		
 	};
 }
 

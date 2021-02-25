@@ -19,6 +19,12 @@
       <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
       <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
     </Filter>
+    <Filter Include="Framework\Core\Imgui">
+      <UniqueIdentifier>{5283dfbe-55b5-49c0-9f80-404277881bf4}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Commands">
+      <UniqueIdentifier>{c43c57c6-6e69-4f2b-befe-d84787d1ab39}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -75,8 +81,35 @@
     <ClInclude Include="Components.h">
       <Filter>Framework\Components</Filter>
     </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imconfig.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imgui_internal.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_rectpack.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_textedit.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\imstb_truetype.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
+    <ClInclude Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.h">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClInclude>
     <ClInclude Include="TimeComponent.h">
-      <Filter>Framework</Filter>
+      <Filter>Framework\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Command.h">
+      <Filter>Framework\Commands</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -128,8 +161,32 @@
     <ClCompile Include="TextureComponent.cpp">
       <Filter>Framework\Components</Filter>
     </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_demo.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_draw.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_tables.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\imgui_widgets.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_opengl2.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
+    <ClCompile Include="..\3rdParty\imgui-1.81\backends\imgui_impl_sdl.cpp">
+      <Filter>Framework\Core\Imgui</Filter>
+    </ClCompile>
     <ClCompile Include="TimeComponent.cpp">
-      <Filter>Game Files</Filter>
+      <Filter>Framework\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="Command.cpp">
+      <Filter>Framework\Commands</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
