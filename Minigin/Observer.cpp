@@ -8,8 +8,9 @@ dae::Observer::Observer()
 }
 
 //Player Observer
-dae::PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName)
+dae::PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName, GameObject* goScore)
 	: m_GameObject(gameObject)
+	, m_ScoreGameObject(goScore)
 	, m_Name(playerName)
 {
 }
@@ -30,6 +31,25 @@ void dae::PlayerObserver::Notify(GameObject* gameObject, Event event)
 		case Event::playerDied:
 			gameObject->GetComponent<TextComponent>()->SetText(m_Name + " HP: Dead");
 			break;
+		}
+	}
+	else if (gameObject == m_ScoreGameObject)
+	{
+		switch (event)
+		{
+		case Event::playerScored:
+		{
+			if (m_ScoreGameObject)
+			{
+				TextComponent* textComp = m_ScoreGameObject->GetComponent<TextComponent>();
+				ScoreComponent* scoreComp = m_ScoreGameObject->GetComponent<ScoreComponent>();
+				if (textComp && scoreComp)
+				{
+					textComp->SetText(m_Name + " Score: " + std::to_string(scoreComp->GetScore()));
+				}
+			}
+		}
+		break;
 		}
 	}
 }

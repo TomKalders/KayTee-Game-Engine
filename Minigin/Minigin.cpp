@@ -78,30 +78,48 @@ void dae::Minigin::LoadGame() const
 	//auto goPlayer1 = std::make_shared<GameObject>();
 	auto goPlayer1 = new GameObject();
 	goPlayer1->AddComponent(new TextureComponent{});
-	goPlayer1->AddComponent(new TextComponent{ "Yes", fontFPS });
+	goPlayer1->AddComponent(new TextComponent{ "QBert HP: 5", fontFPS });
 	goPlayer1->AddComponent(new HealthComponent{ 5 });
 	goPlayer1->GetComponent<Transform>()->SetPosition(10, 180, 0);
 
+	auto goScore1 = new GameObject();
+	goScore1->AddComponent(new TextureComponent{});
+	goScore1->AddComponent(new TextComponent{ "QBert Score: 0", fontFPS });
+	goScore1->AddComponent(new ScoreComponent());
+	goScore1->GetComponent<Transform>()->SetPosition(10, 220, 0);
+	scene.Add(goScore1);
+
 	Subject* subject = new Subject();
-	Observer* playerObserver = new PlayerObserver{ goPlayer1, "P1"};
+	Observer* playerObserver = new PlayerObserver{ goPlayer1, "QBert" , goScore1};
 	subject->AddObserver(playerObserver);
 	goPlayer1->SetSubject(subject);
+	goScore1->SetSubject(subject);
 	scene.Add(goPlayer1);
 	
 	auto goPlayer2 = new GameObject();
 	goPlayer2->AddComponent(new TextureComponent{});
-	goPlayer2->AddComponent(new TextComponent{ "Yes", fontFPS });
+	goPlayer2->AddComponent(new TextComponent{ "P2 HP: 5", fontFPS });
 	goPlayer2->AddComponent(new HealthComponent{ 5 });
 	goPlayer2->GetComponent<Transform>()->SetPosition(10, 200, 0);
 
-	playerObserver = new PlayerObserver{ goPlayer2, "P2" };
+	auto goScore2 = new GameObject();
+	goScore2->AddComponent(new TextureComponent{});
+	goScore2->AddComponent(new TextComponent{ "P2 Score: 0", fontFPS });
+	goScore2->AddComponent(new ScoreComponent());
+	goScore2->GetComponent<Transform>()->SetPosition(10, 240, 0);
+	scene.Add(goScore2);
+
+	playerObserver = new PlayerObserver{ goPlayer2, "P2" , goScore2};
 	subject->AddObserver(playerObserver);
 	goPlayer2->SetSubject(subject);
+	goScore2->SetSubject(subject);
 	scene.Add(goPlayer2);
 	scene.Add(subject);
 	
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new DamageCommand(goPlayer2));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_O, InputType::released, new DamageCommand(goPlayer1));
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_1, InputType::held, new IncreaseScore(goScore1));
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_2, InputType::held, new IncreaseScore(goScore2));
 }
 
 void dae::Minigin::Cleanup()

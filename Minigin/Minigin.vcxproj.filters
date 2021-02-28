@@ -126,6 +126,9 @@
     <ClInclude Include="HealthComponent.h">
       <Filter>Framework\Components</Filter>
     </ClInclude>
+    <ClInclude Include="ScoreComponent.h">
+      <Filter>Framework\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -210,6 +213,9 @@
       <Filter>Framework\EventSystem</Filter>
     </ClCompile>
     <ClCompile Include="HealthComponent.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="ScoreComponent.cpp">
       <Filter>Game Files</Filter>
     </ClCompile>
   </ItemGroup>

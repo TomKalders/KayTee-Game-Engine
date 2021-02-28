@@ -6,6 +6,8 @@ namespace dae
 	{
 		//Player Events
 		playerDamaged,
-		playerDied
+		playerDied,
+		playerScored
+		
 	};
 }

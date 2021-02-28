@@ -4,3 +4,4 @@
 #include "TextComponent.h"
 #include "TimeComponent.h"
 #include "HealthComponent.h"
+#include "ScoreComponent.h"

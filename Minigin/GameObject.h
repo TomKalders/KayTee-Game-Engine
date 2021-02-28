@@ -31,6 +31,9 @@ namespace dae
 		template <typename T>
 		T* GetComponent() const;
 
+		template <typename T>
+		std::vector<T*> GetComponents() const;
+
 	private:
 		std::vector<BaseComponent*> m_Components;
 		Subject* m_Subject;
@@ -49,6 +52,21 @@ namespace dae
 			}
 		}
 		return nullptr;
+	}
+
+	template <typename T>
+	inline std::vector<T*> GameObject::GetComponents() const
+	{
+		std::vector<T*> components;
+		for (BaseComponent* component : m_Components)
+		{
+			T* castedPtr = dynamic_cast<T*>(component);
+			if (castedPtr != nullptr)
+			{
+				components.push_back(component);
+			}
+		}
+		return components;
 	}
 }
 

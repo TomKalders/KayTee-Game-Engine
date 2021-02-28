@@ -33,7 +33,7 @@ void dae::Renderer::Init(SDL_Window * window)
 	ImGui_ImplSDL2_InitForOpenGL(window, SDL_GL_GetCurrentContext());
 	ImGui_ImplOpenGL2_Init();
 
-	m_ShowDemo = new bool{ true };
+	m_ShowDemo = new bool{ false };
 }
 
 void dae::Renderer::Render() const
@@ -45,8 +45,18 @@ void dae::Renderer::Render() const
 	ImGui_ImplOpenGL2_NewFrame();
 	ImGui_ImplSDL2_NewFrame(m_Window);
 	ImGui::NewFrame();
-	if (m_ShowDemo)
+	if (*m_ShowDemo)
 		ImGui::ShowDemoWindow(m_ShowDemo);
+
+	/// <IMGUI>
+	ImGui::Begin("Controls");
+	ImGui::Text("1 to increase player 1 score");
+	ImGui::Text("2 to increase player 2 score");
+	ImGui::Text("P to damage player 2");
+	ImGui::Text("O to damage player 1");
+	ImGui::End();
+	///
+	
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
 	

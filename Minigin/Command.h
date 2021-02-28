@@ -69,4 +69,18 @@ namespace dae
 	private:
 		GameObject* m_GameObject;
 	};
+
+	class IncreaseScore final : public Command
+	{
+	public:
+		IncreaseScore(GameObject* gameObject) { m_GameObject = gameObject; };
+		void Execute() override
+		{
+			ScoreComponent* score = m_GameObject->GetComponent<ScoreComponent>();
+			score->AddScore(500);
+		};
+
+	private:
+		GameObject* m_GameObject;
+	};
 }

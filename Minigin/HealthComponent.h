@@ -17,7 +17,7 @@ namespace dae
 		void Damage(int damage);
 		void Heal(int health);
 
-		int GetHealth();
+		int GetHealth() const;
 		void SetHealth(int health);
 
 	private:

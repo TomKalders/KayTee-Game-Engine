@@ -48,7 +48,7 @@ void dae::HealthComponent::Heal(int health)
 		m_Health = m_MaxHealth;
 }
 
-int dae::HealthComponent::GetHealth()
+int dae::HealthComponent::GetHealth() const
 {
 	return m_Health;
 }
