@@ -7,6 +7,7 @@ class BaseComponent;
 namespace dae
 {
 	class Texture2D;
+	class Subject;
 	
 	class GameObject final : public SceneObject
 	{
@@ -23,14 +24,16 @@ namespace dae
 		void Render() const override;
 		
 		void AddComponent(BaseComponent* component);
+		void SetSubject(Subject* subject);
+		Subject* GetSubject();
 
 		//Templated Functions
 		template <typename T>
 		T* GetComponent() const;
 
-
 	private:
 		std::vector<BaseComponent*> m_Components;
+		Subject* m_Subject;
 	};
 
 	//Templated Functions

@@ -3,6 +3,7 @@
 #include "ResourceManager.h"
 #include "Renderer.h"
 #include "BaseComponent.h"
+#include "Subject.h"
 
 dae::GameObject::GameObject()
 {
@@ -16,6 +17,12 @@ dae::GameObject::~GameObject()
 		delete component;
 		component = nullptr;
 	}
+
+	//if (m_Subject)
+	//{
+	//	delete m_Subject;
+	//	m_Subject = nullptr;
+	//}
 }
 
 void dae::GameObject::Update(float dt)
@@ -38,4 +45,20 @@ void dae::GameObject::AddComponent(BaseComponent* component)
 {
 	component->SetParent(this);
 	m_Components.push_back(component);
+}
+
+void dae::GameObject::SetSubject(Subject* subject)
+{
+	if (m_Subject)
+	{
+		delete m_Subject;
+		m_Subject = nullptr;
+	}
+
+	m_Subject = subject;
+}
+
+dae::Subject* dae::GameObject::GetSubject()
+{
+	return m_Subject;
 }

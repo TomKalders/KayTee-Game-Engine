@@ -9,6 +9,8 @@
 #include <SDL.h>
 #include "GameObject.h"
 #include "Scene.h"
+#include "Subject.h"
+#include "Observer.h"
 
 #include "Components.h"
 
@@ -45,29 +47,61 @@ void dae::Minigin::LoadGame() const
 {
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
-	auto goBackground = std::make_shared<GameObject>();
+	//auto goBackground = std::make_shared<GameObject>();
+	auto goBackground = new GameObject();
 	goBackground->AddComponent(new TextureComponent{"background.jpg"});
 	scene.Add(goBackground);
 
-	auto goLogo = std::make_shared<GameObject>();
+	//auto goLogo = std::make_shared<GameObject>();
+	auto goLogo = new GameObject();
 	goLogo->GetComponent<Transform>()->SetPosition({ 216, 180, 0 });
 	
 	goLogo->AddComponent(new TextureComponent{ "logo.png" });
 	scene.Add(goLogo);
 	
-	auto goText = std::make_shared<GameObject>();
+	//auto goText = std::make_shared<GameObject>();
+	auto goText = new GameObject();
 	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 36);
 	goText->GetComponent<Transform>()->SetPosition({ 80, 20, 0});
 	goText->AddComponent(new TextureComponent{});
 	goText->AddComponent(new TextComponent{ "Programming 4 Assignment", font });
 	scene.Add(goText);
 
-	auto goFPSCounter = std::make_shared<GameObject>();
+	//auto goFPSCounter = std::make_shared<GameObject>();
+	auto goFPSCounter = new GameObject();
 	auto fontFPS = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
 	goFPSCounter->AddComponent(new TextureComponent{});
 	goFPSCounter->AddComponent(new TextComponent{ "FPS:", fontFPS, {255, 255, 0} });
 	goFPSCounter->AddComponent(new TimeComponent{});
 	scene.Add(goFPSCounter);
+
+	//auto goPlayer1 = std::make_shared<GameObject>();
+	auto goPlayer1 = new GameObject();
+	goPlayer1->AddComponent(new TextureComponent{});
+	goPlayer1->AddComponent(new TextComponent{ "Yes", fontFPS });
+	goPlayer1->AddComponent(new HealthComponent{ 5 });
+	goPlayer1->GetComponent<Transform>()->SetPosition(10, 180, 0);
+
+	Subject* subject = new Subject();
+	Observer* playerObserver = new PlayerObserver{ goPlayer1, "P1"};
+	subject->AddObserver(playerObserver);
+	goPlayer1->SetSubject(subject);
+	scene.Add(goPlayer1);
+	
+	auto goPlayer2 = new GameObject();
+	goPlayer2->AddComponent(new TextureComponent{});
+	goPlayer2->AddComponent(new TextComponent{ "Yes", fontFPS });
+	goPlayer2->AddComponent(new HealthComponent{ 5 });
+	goPlayer2->GetComponent<Transform>()->SetPosition(10, 200, 0);
+
+	playerObserver = new PlayerObserver{ goPlayer2, "P2" };
+	subject->AddObserver(playerObserver);
+	goPlayer2->SetSubject(subject);
+	scene.Add(goPlayer2);
+	scene.Add(subject);
+	
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new DamageCommand(goPlayer2));
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_O, InputType::released, new DamageCommand(goPlayer1));
 }
 
 void dae::Minigin::Cleanup()
@@ -105,7 +139,7 @@ void dae::Minigin::Run()
 		//	this_thread::sleep_for(sleepTime);
 		//}
 		bool running = true;
-		InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new QuitCommand(&running));
+		InputManager::GetInstance().AddCommand(SDL_SCANCODE_ESCAPE, InputType::released, new QuitCommand(&running));
 
 		
 		auto lastTime = std::chrono::high_resolution_clock::now();

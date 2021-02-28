@@ -1,6 +1,6 @@
 #include "MiniginPCH.h"
 #include "Command.h"
 
-Command::Command()
+dae::Command::Command()
 {
 }

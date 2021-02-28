@@ -25,6 +25,9 @@
     <Filter Include="Framework\Commands">
       <UniqueIdentifier>{c43c57c6-6e69-4f2b-befe-d84787d1ab39}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\EventSystem">
+      <UniqueIdentifier>{94f923d9-5e87-4b26-9634-4c8b0835b5f2}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -111,6 +114,18 @@
     <ClInclude Include="Command.h">
       <Filter>Framework\Commands</Filter>
     </ClInclude>
+    <ClInclude Include="Observer.h">
+      <Filter>Framework\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="EventEnums.h">
+      <Filter>Framework\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="Subject.h">
+      <Filter>Framework\EventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="HealthComponent.h">
+      <Filter>Framework\Components</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -187,6 +202,15 @@
     </ClCompile>
     <ClCompile Include="Command.cpp">
       <Filter>Framework\Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="Observer.cpp">
+      <Filter>Framework\EventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="Subject.cpp">
+      <Filter>Framework\EventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="HealthComponent.cpp">
+      <Filter>Game Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>
