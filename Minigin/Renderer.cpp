@@ -2,6 +2,7 @@
 #include "Renderer.h"
 #include <SDL.h>
 #include "SceneManager.h"
+#include "HudManager.h"
 #include "Texture2D.h"
 
 
@@ -59,6 +60,8 @@ void dae::Renderer::Render() const
 	
 	ImGui::Render();
 	ImGui_ImplOpenGL2_RenderDrawData(ImGui::GetDrawData());
+
+	HudManager::GetInstance().GetHud()->Render();
 	
 	SDL_RenderPresent(m_Renderer);
 }

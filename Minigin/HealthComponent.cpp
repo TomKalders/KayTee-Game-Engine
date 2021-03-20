@@ -1,12 +1,13 @@
 ﻿#include "MiniginPCH.h"
 #include "HealthComponent.h"
 #include "GameObject.h"
-#include "Subject.h"
 #include "TextComponent.h"
+#include "SubjectComponent.h"
 
 dae::HealthComponent::HealthComponent(int health)
 	: m_Health(health)
 	, m_MaxHealth(health)
+	, m_pSubjectComponent{nullptr}
 {
 }
 
@@ -14,9 +15,8 @@ dae::HealthComponent::~HealthComponent()
 {
 }
 
-void dae::HealthComponent::Update(float dt)
+void dae::HealthComponent::Update(float)
 {
-	UNREFERENCED_PARAMETER(dt);
 }
 
 void dae::HealthComponent::Render() const
@@ -30,13 +30,19 @@ void dae::HealthComponent::Damage(int damage)
 	if (m_Health < 0)
 		m_Health = 0;
 
-	if (m_Health == 0)
+	if (!m_pSubjectComponent)
+		m_pSubjectComponent = m_pParent->GetComponent<SubjectComponent>();
+
+	if (m_pSubjectComponent)
 	{
-		m_pParent->GetSubject()->Notify(m_pParent, Event::playerDied);
-	}
-	else
-	{
-		m_pParent->GetSubject()->Notify(m_pParent, Event::playerDamaged);
+		if (m_Health == 0)
+		{
+			m_pSubjectComponent->Notify(m_pParent, Event::playerDied);
+		}
+		else
+		{
+			m_pSubjectComponent->Notify(m_pParent, Event::playerDamaged);
+		}
 	}
 }
 

@@ -1,7 +1,6 @@
 #include "MiniginPCH.h"
 #include "Scene.h"
 #include "GameObject.h"
-#include "Subject.h"
 
 using namespace dae;
 
@@ -11,27 +10,16 @@ Scene::Scene(const std::string& name) : m_Name(name) {}
 
 Scene::~Scene()
 {
-	for (SceneObject* object : m_Objects)
+	for (GameObject* object : m_Objects)
 	{
 		delete object;
 		object = nullptr;
 	}
-	
-	for (Subject* subject : m_Subjects)
-	{
-		delete subject;
-		subject = nullptr;
-	}
 }
 
-void Scene::Add(SceneObject* object)
+void Scene::Add(GameObject* object)
 {
 	m_Objects.push_back(object);
-}
-
-void Scene::Add(Subject* subject)
-{
-	m_Subjects.push_back(subject);
 }
 
 void Scene::Update(float dt)

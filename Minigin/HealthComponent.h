@@ -4,6 +4,7 @@
 namespace dae
 {
 	class TextComponent;
+	class SubjectComponent;
 	
 	class HealthComponent : public BaseComponent
 	{
@@ -23,5 +24,6 @@ namespace dae
 	private:
 		int m_Health;
 		int m_MaxHealth;
+		SubjectComponent* m_pSubjectComponent;
 	};
 }

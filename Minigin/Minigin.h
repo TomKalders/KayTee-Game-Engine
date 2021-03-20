@@ -2,6 +2,7 @@
 struct SDL_Window;
 namespace dae
 {
+	class Hud;
 	class Minigin
 	{
 	public:

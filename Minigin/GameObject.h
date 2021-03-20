@@ -9,23 +9,23 @@ namespace dae
 	class Texture2D;
 	class Subject;
 	
-	class GameObject final : public SceneObject
+	class GameObject final
 	{
 	public:
 		GameObject();
-		virtual ~GameObject();
+		~GameObject();
 		GameObject(const GameObject& other) = delete;
 		GameObject(GameObject&& other) = delete;
 		GameObject& operator=(const GameObject& other) = delete;
 		GameObject& operator=(GameObject&& other) = delete;
 
 		//Public member functions
-		void Update(float dt) override;
-		void Render() const override;
+		void Update(float dt);
+		void Render() const;
 		
 		void AddComponent(BaseComponent* component);
-		void SetSubject(Subject* subject);
-		Subject* GetSubject();
+		//void SetSubject(Subject* subject);
+		//Subject* GetSubject();
 
 		//Templated Functions
 		template <typename T>
@@ -36,7 +36,7 @@ namespace dae
 
 	private:
 		std::vector<BaseComponent*> m_Components;
-		Subject* m_Subject;
+		//Subject* m_Subject;
 	};
 
 	//Templated Functions
@@ -63,7 +63,7 @@ namespace dae
 			T* castedPtr = dynamic_cast<T*>(component);
 			if (castedPtr != nullptr)
 			{
-				components.push_back(component);
+				components.push_back(castedPtr);
 			}
 		}
 		return components;

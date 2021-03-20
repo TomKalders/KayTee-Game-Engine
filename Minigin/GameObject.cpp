@@ -47,18 +47,18 @@ void dae::GameObject::AddComponent(BaseComponent* component)
 	m_Components.push_back(component);
 }
 
-void dae::GameObject::SetSubject(Subject* subject)
-{
-	if (m_Subject)
-	{
-		delete m_Subject;
-		m_Subject = nullptr;
-	}
+//void dae::GameObject::SetSubject(Subject* subject)
+//{
+//	if (m_Subject)
+//	{
+//		delete m_Subject;
+//		m_Subject = nullptr;
+//	}
+//
+//	m_Subject = subject;
+//}
 
-	m_Subject = subject;
-}
-
-dae::Subject* dae::GameObject::GetSubject()
-{
-	return m_Subject;
-}
+//dae::Subject* dae::GameObject::GetSubject()
+//{
+//	return m_Subject;
+//}

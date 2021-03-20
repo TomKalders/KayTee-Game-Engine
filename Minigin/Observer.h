@@ -16,19 +16,18 @@ namespace dae
 		Observer& operator=(const Observer& other) = delete;
 		Observer& operator=(Observer&& other) = delete;
 
-		virtual void Notify(GameObject* gameObject, Event event) = 0;
+		virtual void Notify(GameObject* gameObject, Event event, GameObject* parent = nullptr) = 0;
 	};
 
 	class PlayerObserver final : public Observer
 	{
 	public:
-		PlayerObserver(GameObject* gameObject, const std::string& playerName, GameObject* goScore);
+		PlayerObserver(GameObject* gameObject, const std::string& playerName);
 		virtual ~PlayerObserver() = default;
 
-		void Notify(GameObject* gameObject, Event event) override;
+		void Notify(GameObject* gameObject, Event event, GameObject* parent = nullptr) override;
 	private:
 		GameObject* m_GameObject;
-		GameObject* m_ScoreGameObject;
 		std::string m_Name;
 	};
 }

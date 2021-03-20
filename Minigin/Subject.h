@@ -6,7 +6,7 @@ namespace  dae
 	class Observer;
 	class GameObject;
 
-	class Subject
+	class Subject final
 	{
 	public:
 		Subject();

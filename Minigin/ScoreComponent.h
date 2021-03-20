@@ -3,6 +3,7 @@
 
 namespace dae
 {
+	class SubjectComponent;
 	class ScoreComponent final : public BaseComponent
 	{
 	public:
@@ -14,5 +15,6 @@ namespace dae
 	
 	private:
 		int m_Score;
+		SubjectComponent* m_pSubjectComponent;
 	};
 }

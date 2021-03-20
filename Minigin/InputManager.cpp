@@ -78,15 +78,15 @@ bool dae::InputManager::ProcessInput()
 		}
 	}
 
-	UNREFERENCED_PARAMETER(result);
-	//if (result == ERROR_SUCCESS)
-	//{
+	if (result == ERROR_SUCCESS)
+	{
 
-	//}
-	//else
-	//{
-	//	std::cout << "Controller Not Found!";
-	//}
+	}
+	else
+	{
+
+		//std::cout << "Controller Not Found!";
+	}
 	return true;
 }
 

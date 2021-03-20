@@ -10,6 +10,7 @@ namespace dae
 	class Font;
 	class Texture2D;
 	class TextureComponent;
+	class TextElement;
 	
 	class TextComponent final: public BaseComponent
 	{
@@ -26,12 +27,14 @@ namespace dae
 
 		void SetText(const std::string& text);
 		void SetColor(const glm::vec3& color);
+		void SetTextElement(TextElement* textElement);
 
 	private:
 		bool m_NeedsUpdate;
 		std::string m_Text;
 		glm::tvec3<uint8_t> m_Color;
 		std::shared_ptr<Font> m_Font;
+		TextElement* m_pHudElement;
 	};
 }
 

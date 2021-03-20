@@ -8,14 +8,14 @@ dae::Subject::Subject()
 
 dae::Subject::~Subject()
 {
-	for (Observer* observer : m_Observers)
-	{
-		if (observer)
-		{
-			delete observer;
-			observer = nullptr;
-		}
-	}
+	//for (Observer* observer : m_Observers)
+	//{
+	//	if (observer)
+	//	{
+	//		delete observer;
+	//		observer = nullptr;
+	//	}
+	//}
 }
 
 void dae::Subject::AddObserver(Observer* observer)

@@ -5,3 +5,5 @@
 #include "TimeComponent.h"
 #include "HealthComponent.h"
 #include "ScoreComponent.h"
+#include "SubjectComponent.h"
+#include "ObserverComponent.h"

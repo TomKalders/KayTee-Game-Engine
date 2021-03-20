@@ -8,48 +8,54 @@ dae::Observer::Observer()
 }
 
 //Player Observer
-dae::PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName, GameObject* goScore)
+dae::PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName)
 	: m_GameObject(gameObject)
-	, m_ScoreGameObject(goScore)
 	, m_Name(playerName)
 {
 }
 
-void dae::PlayerObserver::Notify(GameObject* gameObject, Event event)
+void dae::PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* parent)
 {
-	if (gameObject == m_GameObject)
+	if (parent && gameObject == m_GameObject)
 	{
 		switch (event)
 		{
 		case Event::playerDamaged:
 		{
 			int health = gameObject->GetComponent<HealthComponent>()->GetHealth();
-			gameObject->GetComponent<TextComponent>()->SetText(m_Name + " HP: " + std::to_string(health));
+			parent->GetComponents<TextComponent>().at(1)->SetText(m_Name + " HP: " + std::to_string(health));
 		}
 		break;
 
 		case Event::playerDied:
-			gameObject->GetComponent<TextComponent>()->SetText(m_Name + " HP: Dead");
+			parent->GetComponents<TextComponent>().at(1)->SetText(m_Name + " HP: Dead");
 			break;
-		}
-	}
-	else if (gameObject == m_ScoreGameObject)
-	{
-		switch (event)
-		{
+
 		case Event::playerScored:
 		{
-			if (m_ScoreGameObject)
+
+			TextComponent* textComp = parent->GetComponent<TextComponent>();
+			ScoreComponent* scoreComp = m_GameObject->GetComponent<ScoreComponent>();
+			if (textComp && scoreComp)
 			{
-				TextComponent* textComp = m_ScoreGameObject->GetComponent<TextComponent>();
-				ScoreComponent* scoreComp = m_ScoreGameObject->GetComponent<ScoreComponent>();
-				if (textComp && scoreComp)
-				{
-					textComp->SetText(m_Name + " Score: " + std::to_string(scoreComp->GetScore()));
-				}
+				textComp->SetText(m_Name + " Score: " + std::to_string(scoreComp->GetScore()));
 			}
 		}
 		break;
 		}
 	}
+	
+	//switch (event)
+	//{
+	//case Event::playerScored:
+	//{
+	//	TextComponent* textComp = m_GameObject->GetComponent<TextComponent>();
+	//	ScoreComponent* scoreComp = m_GameObject->GetComponent<ScoreComponent>();
+	//	if (textComp && scoreComp)
+	//	{
+	//		textComp->SetText(m_Name + " Score: " + std::to_string(scoreComp->GetScore()));
+	//	}
+	//}
+	//break;
+	//}
 }

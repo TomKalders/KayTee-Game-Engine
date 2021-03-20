@@ -7,6 +7,7 @@
 #include "Font.h"
 #include "Texture2D.h"
 #include "GameObject.h"
+#include "HudElements.h"
 #include "TextureComponent.h"
 
 dae::TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const glm::vec3& color)
@@ -49,15 +50,22 @@ void dae::TextComponent::Render() const
 {
 }
 
-
 // This implementation uses the "dirty flag" pattern
 void dae::TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
+
+	if (m_pHudElement)
+		m_pHudElement->SetText(text);
 }
 
 void dae::TextComponent::SetColor(const glm::vec3& color)
 {
 	m_Color = color;
+}
+
+void dae::TextComponent::SetTextElement(TextElement* textElement)
+{
+	m_pHudElement = textElement;
 }
