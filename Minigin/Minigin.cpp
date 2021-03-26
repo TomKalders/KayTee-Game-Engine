@@ -12,10 +12,15 @@
 #include "Subject.h"
 #include "Observer.h"
 
+#include "vld.h"
+
 #include "Components.h"
 #include "Hud.h"
 #include "HudElements.h"
 #include "HudManager.h"
+
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 
 using namespace std;
 using namespace std::chrono;
@@ -42,6 +47,10 @@ void dae::Minigin::Initialize()
 
 	Renderer::GetInstance().Init(m_Window);
 	HudManager::GetInstance().CreateHud();
+	ServiceLocator::RegisterSoundSystem(new SDLSoundSystem{});
+	SDLSoundSystem* ss = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
+	SoundID id = ss->AddSound(Sound{ "../data/1up.wav" });
+	ss->Play(id, 100);
 }
 
 /**
@@ -79,79 +88,81 @@ void dae::Minigin::LoadGame() const
 	goFPSCounter->AddComponent(new TimeComponent{});
 	scene.Add(goFPSCounter);
 
-	//player 1
+	// - player 1
 	auto goScore1 = new GameObject();
 	auto goPlayer1 = new GameObject();
-
-	//TextComponent
+	glm::vec3 color = { 255, 255, 0 };
+	
+	//TextComponents
 	TextComponent* scoreText = new TextComponent{ "Player 1 Score: 0", fontFPS };
-	TextElement* textElement = new TextElement{ "Player 1 Score: 0", fontFPS, {10, 220} };
+	TextElement* textElement = new TextElement{ "Player 1 Score: 0", fontFPS, {10, 180}, color };
 	scoreText->SetTextElement(textElement);
 	goScore1->AddComponent(scoreText);
 	HudManager::GetInstance().GetHud()->AddElement(textElement);
 
 	TextComponent* healthText = new TextComponent{ "Player 1 HP: 0", fontFPS };
-	textElement = new TextElement{ "Player 1 HP: 5", fontFPS, {10, 180} };
+	textElement = new TextElement{ "Player 1 HP: 5", fontFPS, {10, 200}, color};
 	healthText->SetTextElement(textElement);
 	goScore1->AddComponent(healthText);
 	HudManager::GetInstance().GetHud()->AddElement(textElement);
-	
+
+	//Observer
 	ObserverComponent* playerObserverComponent = new ObserverComponent{ new PlayerObserver{ goPlayer1, "Player 1" } };
 	goScore1->AddComponent(playerObserverComponent);
-	
-	//goScore1->GetComponent<Transform>()->SetPosition(10, 220, 0);
 	scene.Add(goScore1);
-	//m_Hud->AddElement(textElement);
 
-	//goPlayer1->AddComponent(new TextComponent{ "QBert HP: 5", fontFPS });
 	SubjectComponent* subjectComponent = new SubjectComponent{};
 	subjectComponent->AddObserver(playerObserverComponent);
 	goPlayer1->AddComponent(subjectComponent);
 	goPlayer1->AddComponent(new TextureComponent{});
 	goPlayer1->AddComponent(new HealthComponent{ 5 });
 	goPlayer1->AddComponent(new ScoreComponent());
-	goPlayer1->GetComponent<Transform>()->SetPosition(10, 180, 0);
-
-
-	//Subject* subject = new Subject();
-	//Observer* playerObserver = new PlayerObserver{ goPlayer1, "QBert" , goScore1};
-	//subject->AddObserver(playerObserver);
-	//goPlayer1->SetSubject(subject);
-	//goScore1->SetSubject(subject);
 	scene.Add(goPlayer1);
+	// - player 1
 
-	//**Player2**//
-	//auto goPlayer2 = new GameObject();
-	//goPlayer2->AddComponent(new TextureComponent{});
-	//goPlayer2->AddComponent(new TextComponent{ "P2 HP: 5", fontFPS });
-	//goPlayer2->AddComponent(new HealthComponent{ 5 });
-	//goPlayer2->GetComponent<Transform>()->SetPosition(10, 200, 0);
-	//
-	//auto goScore2 = new GameObject();
-	//goScore2->AddComponent(new TextureComponent{});
-	//goScore2->AddComponent(new TextComponent{ "P2 Score: 0", fontFPS });
-	//goScore2->AddComponent(new ScoreComponent());
-	//goScore2->GetComponent<Transform>()->SetPosition(10, 240, 0);
-	//scene.Add(goScore2);
-	//**Player2**//
+	// - player 2
+	auto goScore2 = new GameObject();
+	auto goPlayer2 = new GameObject();
 
-	//playerObserver = new PlayerObserver{ goPlayer2, "P2" , goScore2};
-	//subject->AddObserver(playerObserver);
-	//goPlayer2->SetSubject(subject);
-	//goScore2->SetSubject(subject);
-	//scene.Add(goPlayer2);
-	//scene.Add(subject);
-	
-	//InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new DamageCommand(goPlayer2));
+	//TextComponents
+	scoreText = new TextComponent{ "Player 2 Score: 0", fontFPS };
+	textElement = new TextElement{ "Player 2 Score: 0", fontFPS, {10, 220}, color };
+	scoreText->SetTextElement(textElement);
+	goScore2->AddComponent(scoreText);
+	HudManager::GetInstance().GetHud()->AddElement(textElement);
+
+	healthText = new TextComponent{ "Player 2 HP: 5", fontFPS };
+	textElement = new TextElement{ "Player 2 HP: 5", fontFPS, {10, 240}, color };
+	healthText->SetTextElement(textElement);
+	goScore2->AddComponent(healthText);
+	HudManager::GetInstance().GetHud()->AddElement(textElement);
+
+	//Observer
+	playerObserverComponent = new ObserverComponent{ new PlayerObserver{ goPlayer2, "Player 2" } };
+	goScore2->AddComponent(playerObserverComponent);
+	scene.Add(goScore2);
+
+	subjectComponent = new SubjectComponent{};
+	subjectComponent->AddObserver(playerObserverComponent);
+	goPlayer2->AddComponent(subjectComponent);
+	goPlayer2->AddComponent(new TextureComponent{});
+	goPlayer2->AddComponent(new HealthComponent{ 5 });
+	goPlayer2->AddComponent(new ScoreComponent());
+	scene.Add(goPlayer2);
+	// - player 2
+
+	//Input
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_P, InputType::released, new DamageCommand(goPlayer2));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_O, InputType::released, new DamageCommand(goPlayer1));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_1, InputType::held, new IncreaseScore(goPlayer1));
-	//InputManager::GetInstance().AddCommand(SDL_SCANCODE_2, InputType::held, new IncreaseScore(goPlayer2));
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_2, InputType::held, new IncreaseScore(goPlayer2));
 }
 
 void dae::Minigin::Cleanup()
 {
 	Renderer::GetInstance().Destroy();
 	HudManager::GetInstance().Destroy();
+	ServiceLocator::DestroySoundService();
 	SDL_DestroyWindow(m_Window);
 	m_Window = nullptr;
 	SDL_Quit();
@@ -183,6 +194,7 @@ void dae::Minigin::Run()
 		//	auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
 		//	this_thread::sleep_for(sleepTime);
 		//}
+		
 		bool running = true;
 		InputManager::GetInstance().AddCommand(SDL_SCANCODE_ESCAPE, InputType::released, new QuitCommand(&running));
 

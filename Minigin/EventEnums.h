@@ -10,4 +10,13 @@ namespace dae
 		playerScored
 		
 	};
+
+	enum class SoundEvent
+	{
+		play,
+		pause,
+		volumeUp,
+		volumeDown,
+		mute
+	};
 }

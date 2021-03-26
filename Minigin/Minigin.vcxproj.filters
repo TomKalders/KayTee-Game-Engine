@@ -31,6 +31,12 @@
     <Filter Include="Framework\HUD">
       <UniqueIdentifier>{9eaf68ee-7ccf-4442-a0cb-d69be603cb8b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Framework\Services">
+      <UniqueIdentifier>{3c24ab6d-282f-4072-9158-efaf838b4a0c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Framework\Services\Sound">
+      <UniqueIdentifier>{d9405960-60da-4175-a42c-6306f948d401}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="BaseComponent.h">
@@ -147,6 +153,21 @@
     <ClInclude Include="HudManager.h">
       <Filter>Framework\HUD</Filter>
     </ClInclude>
+    <ClInclude Include="ServiceLocator.h">
+      <Filter>Framework\Services</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundSystem.h">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="NullSoundSystem.h">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SDLSoundSystem.h">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClInclude>
+    <ClInclude Include="SoundManager.h">
+      <Filter>Framework\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -244,6 +265,21 @@
     </ClCompile>
     <ClCompile Include="Hud.cpp">
       <Filter>Framework\HUD</Filter>
+    </ClCompile>
+    <ClCompile Include="ServiceLocator.cpp">
+      <Filter>Framework\Services</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundSystem.cpp">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="NullSoundSystem.cpp">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SDLSoundSystem.cpp">
+      <Filter>Framework\Services\Sound</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
+      <Filter>Game Files</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

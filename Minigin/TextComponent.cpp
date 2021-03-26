@@ -16,6 +16,7 @@ dae::TextComponent::TextComponent(const std::string& text, const std::shared_ptr
 	, m_Text(text)
 	, m_Color(color)
 	, m_Font(font)
+	, m_pHudElement(nullptr)
 {
 }
 
@@ -63,6 +64,9 @@ void dae::TextComponent::SetText(const std::string& text)
 void dae::TextComponent::SetColor(const glm::vec3& color)
 {
 	m_Color = color;
+
+	if (m_pHudElement)
+		m_pHudElement->SetColor(color);
 }
 
 void dae::TextComponent::SetTextElement(TextElement* textElement)

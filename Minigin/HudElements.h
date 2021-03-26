@@ -6,8 +6,9 @@
 #include <memory>
 #pragma warning(push)
 #pragma warning (disable:4201)
-#include <glm/vec3.hpp>
-#include "glm/vec2.hpp"
+//#include <glm/vec3.hpp>
+#include <glm/glm.hpp>
+//#include "glm/vec2.hpp"
 #pragma warning(pop)
 
 #include "Renderer.h"
@@ -71,6 +72,11 @@ namespace dae
 		{
 			m_NeedsUpdate = true;
 			m_Text = text;
+		}
+
+		void SetColor(const glm::vec3& color)
+		{
+			m_Color = color;
 		}
 
 	private:

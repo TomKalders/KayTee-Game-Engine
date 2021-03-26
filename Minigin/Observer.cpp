@@ -44,18 +44,4 @@ void dae::PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject
 		break;
 		}
 	}
-	
-	//switch (event)
-	//{
-	//case Event::playerScored:
-	//{
-	//	TextComponent* textComp = m_GameObject->GetComponent<TextComponent>();
-	//	ScoreComponent* scoreComp = m_GameObject->GetComponent<ScoreComponent>();
-	//	if (textComp && scoreComp)
-	//	{
-	//		textComp->SetText(m_Name + " Score: " + std::to_string(scoreComp->GetScore()));
-	//	}
-	//}
-	//break;
-	//}
 }
