@@ -48,9 +48,9 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 	HudManager::GetInstance().CreateHud();
 	ServiceLocator::RegisterSoundSystem(new SDLSoundSystem{});
-	SDLSoundSystem* ss = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
-	SoundID id = ss->AddSound(Sound{ "../data/1up.wav" });
-	ss->Play(id, 100);
+	//SDLSoundSystem* ss = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
+	//SoundID id = ss->AddSound(Sound{ "../data/1up.wav" });
+	//ss->Play(id, 100);
 }
 
 /**
@@ -156,6 +156,7 @@ void dae::Minigin::LoadGame() const
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_O, InputType::released, new DamageCommand(goPlayer1));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_1, InputType::held, new IncreaseScore(goPlayer1));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_2, InputType::held, new IncreaseScore(goPlayer2));
+	InputManager::GetInstance().AddCommand(SDL_SCANCODE_C, InputType::released, new PlaySound(Sound{"../data/1up.wav"}));
 }
 
 void dae::Minigin::Cleanup()

@@ -2,6 +2,8 @@
 #include <iostream>
 #include "GameObject.h"
 #include "Components.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 
 namespace dae
 {
@@ -82,5 +84,24 @@ namespace dae
 
 	private:
 		GameObject* m_GameObject;
+	};
+
+	class PlaySound final : public Command
+	{
+	public:
+		PlaySound(Sound sound)
+		{
+			m_SoundSystem = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
+			if (m_SoundSystem)
+				m_Id = m_SoundSystem->AddSound(sound);
+		};
+		void Execute() override
+		{
+			m_SoundSystem->Play(m_Id, 100.f);
+		};
+
+	private:
+		SDLSoundSystem* m_SoundSystem;
+		SoundID m_Id;
 	};
 }

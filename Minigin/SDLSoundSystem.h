@@ -2,6 +2,8 @@
 #include "SoundSystem.h"
 #include <map>
 #include <mutex>
+#include <queue>
+#include <thread>
 
 namespace dae
 {
@@ -28,6 +30,11 @@ namespace dae
 		std::mutex m_SoundMutex;
 		SoundID m_NextID;
 		
-		void PlaySound(Sound sound, const float volume);
+		std::thread* m_Thread;
+		std::queue<std::pair<SoundID, float>> m_SoundQueue;
+		bool m_IsRunning;
+
+		void CreateThread();
+		void AddToQueue(SoundID id, float volume);
 	};
 }
