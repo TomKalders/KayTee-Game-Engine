@@ -27,6 +27,7 @@ public:
 	
 	glm::ivec2 GetGridLocation(int row, int column);
 	glm::ivec2 GetGridCenter(int row, int column);
+	bool ValidGridCoordinate(int row, int column);
 
 	void ActivateCell(int row, int column);
 private:

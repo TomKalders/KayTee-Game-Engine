@@ -20,10 +20,10 @@ void GridComponent::Initialize()
 
 glm::ivec2 GridComponent::GetGridLocation(int row, int column)
 {
-	if (row < 0 || row >= m_Width || column < 0 || column >= m_Height)
+	if (!ValidGridCoordinate(row, column))
 	{
 		std::cout << "Grid Coordinates Out Of Range!\n";
-		//return glm::ivec2{ 0, 0 };
+		return glm::ivec2{ 0, 0 };
 	}
 	
 	int x = (column - row / 2) * m_CellSize + (!(row % 2) * (m_CellSize / 2));
@@ -66,4 +66,15 @@ void GridComponent::CreateGrid()
 			m_pParent->AddComponent(sprite);
 		}
 	}
+}
+
+bool GridComponent::ValidGridCoordinate(int row, int column)
+{
+	if (row < 0 || row >= m_Height || column > row)
+		return false;
+
+	if (column < 0 || column >= m_Width)
+		return false;
+
+	return true;
 }
