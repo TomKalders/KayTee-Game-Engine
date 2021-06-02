@@ -1,5 +1,9 @@
 #pragma once
 #include "BaseComponent.h"
+#pragma warning(push)
+#pragma warning (disable:4201)
+#include <glm/glm.hpp>
+#pragma warning(pop)
 
 namespace dae
 {
@@ -8,8 +12,8 @@ namespace dae
 	class TextureComponent : public BaseComponent
 	{
 	public:
-		TextureComponent();
 		TextureComponent(const std::string& filename);
+		TextureComponent(const std::string& filename, const glm::vec2& position);
 		virtual ~TextureComponent() = default;
 		TextureComponent(const TextureComponent& other) = delete;
 		TextureComponent(TextureComponent&& other) = delete;
@@ -25,6 +29,8 @@ namespace dae
 
 	private:
 		std::shared_ptr<Texture2D> m_spTexture;
+		glm::vec2 m_Position;
+		bool m_CustomPosition;
 	};
 }
 

@@ -36,8 +36,8 @@ void dae::Minigin::Initialize()
 		"KayTee Engine",
 		SDL_WINDOWPOS_CENTERED,
 		SDL_WINDOWPOS_CENTERED,
-		640,
-		480,
+		m_WindowSize.x,
+		m_WindowSize.y,
 		SDL_WINDOW_OPENGL
 	);
 	if (m_Window == nullptr) 
@@ -48,9 +48,8 @@ void dae::Minigin::Initialize()
 	Renderer::GetInstance().Init(m_Window);
 	HudManager::GetInstance().CreateHud();
 	ServiceLocator::RegisterSoundSystem(new SDLSoundSystem{});
-	//SDLSoundSystem* ss = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
-	//SoundID id = ss->AddSound(Sound{ "../data/1up.wav" });
-	//ss->Play(id, 100);
+
+	GameInitialize();
 }
 
 /**
@@ -58,6 +57,7 @@ void dae::Minigin::Initialize()
  */
 void dae::Minigin::LoadGame() const
 {
+	/*
 	//Create Scene
 	auto& scene = SceneManager::GetInstance().CreateScene("Demo");
 
@@ -157,10 +157,13 @@ void dae::Minigin::LoadGame() const
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_1, InputType::held, new IncreaseScore(goPlayer1));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_2, InputType::held, new IncreaseScore(goPlayer2));
 	InputManager::GetInstance().AddCommand(SDL_SCANCODE_C, InputType::released, new PlaySound(Sound{"../data/1up.wav"}));
+	*/
+	GameLoad();
 }
 
 void dae::Minigin::Cleanup()
 {
+	GameCleanup();
 	Renderer::GetInstance().Destroy();
 	HudManager::GetInstance().Destroy();
 	ServiceLocator::DestroySoundService();
@@ -174,7 +177,7 @@ void dae::Minigin::Run()
 	Initialize();
 
 	// tell the resource manager where he can find the game data
-	ResourceManager::GetInstance().Init("../Data/");
+	ResourceManager::GetInstance().Init("Data/");
 
 	LoadGame();
 
@@ -207,6 +210,7 @@ void dae::Minigin::Run()
 			float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
 			doContinue = input.ProcessInput() && running;
+			GameUpdate(deltaTime);
 			sceneManager.Update(deltaTime);
 			renderer.Render();
 
@@ -216,4 +220,9 @@ void dae::Minigin::Run()
 	}
 
 	Cleanup();
+}
+
+glm::ivec2 dae::Minigin::GetWindowSize() const
+{
+	return m_WindowSize;
 }

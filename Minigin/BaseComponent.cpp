@@ -17,6 +17,10 @@ dae::BaseComponent::~BaseComponent()
 {
 }
 
+void dae::BaseComponent::Initialize()
+{
+}
+
 void dae::BaseComponent::Update(float dt)
 {
 	dt;

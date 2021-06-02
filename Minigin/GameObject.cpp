@@ -44,6 +44,7 @@ void dae::GameObject::Render() const
 void dae::GameObject::AddComponent(BaseComponent* component)
 {
 	component->SetParent(this);
+	component->Initialize();
 	m_Components.push_back(component);
 }
 

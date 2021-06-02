@@ -8,7 +8,8 @@ void dae::SceneManager::Update(float dt)
 
 	for(auto& scene : m_Scenes)
 	{
-		scene->Update(dt);
+		if (scene->IsActive())
+			scene->Update(dt);
 	}
 }
 
@@ -16,7 +17,8 @@ void dae::SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
 	{
-		scene->Render();
+		if (scene->IsActive())
+			scene->Render();
 	}
 }
 

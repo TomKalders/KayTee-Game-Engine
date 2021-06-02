@@ -12,6 +12,8 @@ namespace dae
 	public:
 		//void Add(const std::shared_ptr<SceneObject>& object);
 		void Add(GameObject* object);
+		void SetActive(bool active);
+		bool IsActive();
 
 		void Update(float dt);
 		void Render() const;
@@ -30,7 +32,8 @@ namespace dae
 		std::vector<GameObject*> m_Objects;
 		//std::vector<Subject*> m_Subjects;
 
-		static unsigned int m_IdCounter; 
+		static unsigned int m_IdCounter;
+		bool m_Active;
 	};
 
 }

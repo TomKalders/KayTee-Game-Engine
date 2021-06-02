@@ -12,6 +12,7 @@ namespace dae
 		BaseComponent(GameObject* parent);
 		virtual ~BaseComponent();
 
+		virtual void Initialize();
 		virtual void Update(float dt);
 		virtual void Render() const;
 

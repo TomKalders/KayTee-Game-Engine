@@ -1,10 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
-    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
@@ -13,10 +9,52 @@
       <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
     </Filter>
+    <Filter Include="Game Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Custom Components">
+      <UniqueIdentifier>{c9773ae6-d05a-4c20-9214-6d0a9720cc83}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Commands">
+      <UniqueIdentifier>{ae9528cf-beac-492f-8b00-55be56ba55db}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QBertGame.cpp">
-      <Filter>Source Files</Filter>
+      <Filter>Game Files</Filter>
     </ClCompile>
+    <ClCompile Include="QBertApplication.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="GridComponent.cpp">
+      <Filter>Custom Components</Filter>
+    </ClCompile>
+    <ClCompile Include="QbertPCH.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomCommands.cpp">
+      <Filter>Commands</Filter>
+    </ClCompile>
+    <ClCompile Include="GridPosition.cpp">
+      <Filter>Game Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="QBertApplication.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GridComponent.h">
+      <Filter>Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="QbertPCH.h">
+      <Filter>Game Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomCommands.h">
+      <Filter>Commands</Filter>
+    </ClInclude>
+    <ClInclude Include="GridPosition.h">
+      <Filter>Custom Components</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>
