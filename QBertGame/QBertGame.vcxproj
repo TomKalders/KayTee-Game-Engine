@@ -100,7 +100,7 @@
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\rapidjson\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>QbertPCH.h</PrecompiledHeaderFile>
@@ -127,7 +127,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>WIN32;NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\rapidjson\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>QbertPCH.h</PrecompiledHeaderFile>
@@ -154,7 +154,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>_DEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\rapidjson\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>QbertPCH.h</PrecompiledHeaderFile>
@@ -181,7 +181,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
       <SDLCheck>true</SDLCheck>
       <PreprocessorDefinitions>NDEBUG;_CONSOLE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)3rdParty\imgui-1.81;$(SolutionDir)3rdParty\glm;$(SolutionDir)3rdParty\rapidjson\include;$(SolutionDir)3rdParty\SDL2\include;$(SolutionDir)Minigin;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWarningAsError>true</TreatWarningAsError>
       <PrecompiledHeader>Use</PrecompiledHeader>
       <PrecompiledHeaderFile>QbertPCH.h</PrecompiledHeaderFile>
@@ -204,6 +204,8 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="CustomCommands.cpp" />
+    <ClCompile Include="CustomObservers.cpp" />
+    <ClCompile Include="CustomUIRenderer.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="GridPosition.cpp" />
     <ClCompile Include="QBertApplication.cpp" />
@@ -217,6 +219,8 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomCommands.h" />
+    <ClInclude Include="CustomObservers.h" />
+    <ClInclude Include="CustomUIRenderer.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="GridPosition.h" />
     <ClInclude Include="QBertApplication.h" />

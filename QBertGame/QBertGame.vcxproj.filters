@@ -40,7 +40,13 @@
       <Filter>Commands</Filter>
     </ClCompile>
     <ClCompile Include="GridPosition.cpp">
-      <Filter>Game Files</Filter>
+      <Filter>Custom Components</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomUIRenderer.cpp">
+      <Filter>Helpers</Filter>
+    </ClCompile>
+    <ClCompile Include="CustomObservers.cpp">
+      <Filter>Helpers</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -60,6 +66,12 @@
       <Filter>Custom Components</Filter>
     </ClInclude>
     <ClInclude Include="Structs.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomUIRenderer.h">
+      <Filter>Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="CustomObservers.h">
       <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,8 +9,11 @@ public:
 
 	void Update(float dt);
 	void Render();
+	void SetActiveScene(const std::string& name);
+	std::shared_ptr<Scene> GetActiveScene();
 private:
 	friend class Singleton<SceneManager>;
 	SceneManager() = default;
 	std::vector<std::shared_ptr<Scene>> m_Scenes;
+	std::shared_ptr<Scene> m_ActiveScene;
 };

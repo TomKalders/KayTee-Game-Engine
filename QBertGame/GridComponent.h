@@ -4,6 +4,7 @@
 
 
 class TextureComponent;
+class SubjectComponent;
 
 class GridComponent : public BaseComponent
 {
@@ -16,6 +17,7 @@ public:
 	GridComponent& operator=(GridComponent&& other) = delete;
 
 	void Initialize() override;
+	void Update(float dt) override;
 	
 	glm::ivec2 GetGridLocation(int row, int column) const;
 	glm::ivec2 GetGridCenter(int row, int column) const;
@@ -26,6 +28,7 @@ public:
 	void RetriggerCells(bool retrigger);
 	bool RetriggerCells() const;
 	bool AllCellsActive() const;
+	bool GridComplete() const;
 private:
 	std::map<int, TextureComponent*> m_Sprites;
 	std::map<int, bool> m_Cells;
@@ -40,4 +43,5 @@ private:
 	int m_NrOfTriggers;
 
 	void CreateGrid();
+	SubjectComponent* m_Subject;
 };

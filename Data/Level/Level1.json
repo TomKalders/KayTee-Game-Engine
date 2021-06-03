@@ -6,17 +6,22 @@
                 "type" : "Grid",
                 "rows" : 7,
                 "columns" : 7,
-                "cellsize" : 64
+                "cellsize" : 64,
+                "retrigger" : false,
+                "steps" : 1
             },
             {
                 "type" : "Qbert",
                 "row" : 0,
-                "column" : 0
+                "column" : 0,
+
+                "leftup" : 80,
+                "leftdown" : 81,
+                "rightup" : 82,
+                "rightdown" : 79,
+                "controllerId" : 0
             }
 
         ]
-    },
-    {
-        "gameobjects"
     }
 ]

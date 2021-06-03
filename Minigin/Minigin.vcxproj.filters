@@ -168,6 +168,9 @@
     <ClInclude Include="SoundManager.h">
       <Filter>Framework\Core</Filter>
     </ClInclude>
+    <ClInclude Include="UIRenderer.h">
+      <Filter>Framework\Core</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="BaseComponent.cpp">
@@ -280,6 +283,9 @@
     </ClCompile>
     <ClCompile Include="SoundManager.cpp">
       <Filter>Game Files</Filter>
+    </ClCompile>
+    <ClCompile Include="UIRenderer.cpp">
+      <Filter>Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

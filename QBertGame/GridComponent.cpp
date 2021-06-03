@@ -1,6 +1,7 @@
 #include "QbertPCH.h"
 #include "GridComponent.h"
 #include "TextureComponent.h"
+#include "SubjectComponent.h"
 
 #include "GameObject.h"
 
@@ -18,6 +19,15 @@ GridComponent::GridComponent(const glm::vec2& position, int width, int height, i
 void GridComponent::Initialize()
 {
 	CreateGrid();
+	m_Subject = m_pParent->GetComponent<SubjectComponent>();
+}
+
+void GridComponent::Update(float)
+{
+	if (m_Subject && GridComplete())
+	{
+		m_Subject->Notify(m_pParent, Event::levelComplete);
+	}
 }
 
 glm::ivec2 GridComponent::GetGridLocation(int row, int column) const
@@ -87,6 +97,20 @@ bool GridComponent::RetriggerCells() const
 
 bool GridComponent::AllCellsActive() const
 {
+	return false;
+}
+
+bool GridComponent::GridComplete() const
+{
+	auto it = std::find_if(m_Cells.begin(), m_Cells.end(), [this](const std::pair<int, bool>& pair)
+		{
+			return !pair.second;
+		}
+	);
+
+	if (it == m_Cells.end())
+		return true;
+
 	return false;
 }
 

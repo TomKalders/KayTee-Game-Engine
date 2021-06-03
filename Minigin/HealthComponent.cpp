@@ -33,17 +33,17 @@ void HealthComponent::Damage(int damage)
 	if (!m_pSubjectComponent)
 		m_pSubjectComponent = m_pParent->GetComponent<SubjectComponent>();
 
-	if (m_pSubjectComponent)
-	{
-		if (m_Health == 0)
-		{
-			m_pSubjectComponent->Notify(m_pParent, Event::playerDied);
-		}
-		else
-		{
-			m_pSubjectComponent->Notify(m_pParent, Event::playerDamaged);
-		}
-	}
+	//if (m_pSubjectComponent)
+	//{
+	//	if (m_Health == 0)
+	//	{
+	//		m_pSubjectComponent->Notify(m_pParent, Event::playerDied);
+	//	}
+	//	else
+	//	{
+	//		m_pSubjectComponent->Notify(m_pParent, Event::playerDamaged);
+	//	}
+	//}
 }
 
 void HealthComponent::Heal(int health)

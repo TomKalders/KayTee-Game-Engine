@@ -50,12 +50,8 @@ void Renderer::Render() const
 		ImGui::ShowDemoWindow(m_ShowDemo);
 
 	/// <IMGUI>
-	ImGui::Begin("Controls");
-	ImGui::Text("1 to increase player 1 score");
-	ImGui::Text("2 to increase player 2 score");
-	ImGui::Text("P to damage player 2");
-	ImGui::Text("O to damage player 1");
-	ImGui::End();
+	if (m_UIRenderer)
+		m_UIRenderer->RenderUI();
 	///
 	
 	ImGui::Render();
@@ -76,6 +72,12 @@ void Renderer::Destroy()
 	{
 		SDL_DestroyRenderer(m_Renderer);
 		m_Renderer = nullptr;
+	}
+
+	if (m_UIRenderer)
+	{
+		delete m_UIRenderer;
+		m_UIRenderer = nullptr;
 	}
 
 	delete m_ShowDemo;
@@ -99,4 +101,12 @@ void Renderer::RenderTexture(const Texture2D& texture, const float x, const floa
 	dst.w = static_cast<int>(width);
 	dst.h = static_cast<int>(height);
 	SDL_RenderCopy(GetSDLRenderer(), texture.GetSDLTexture(), nullptr, &dst);
+}
+
+void Renderer::SetUIRenderer(UIRenderer* renderer)
+{
+	if (m_UIRenderer)
+		delete m_UIRenderer;
+
+	m_UIRenderer = renderer;
 }

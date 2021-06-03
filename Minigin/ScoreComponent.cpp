@@ -18,8 +18,8 @@ void ScoreComponent::AddScore(int amount)
 	if (!m_pSubjectComponent)
 		m_pSubjectComponent = m_pParent->GetComponent<SubjectComponent>();
 	
-	if (m_pSubjectComponent)
-		m_pSubjectComponent->Notify(m_pParent, Event::playerScored);
+	//if (m_pSubjectComponent)
+	//	m_pSubjectComponent->Notify(m_pParent, Event::playerScored);
 }
 
 int ScoreComponent::GetScore() const

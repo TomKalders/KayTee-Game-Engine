@@ -16,14 +16,14 @@ public:
 	virtual void Notify(GameObject* gameObject, Event event, GameObject* parent = nullptr) = 0;
 };
 
-class PlayerObserver final : public Observer
-{
-public:
-	PlayerObserver(GameObject* gameObject, const std::string& playerName);
-	virtual ~PlayerObserver() = default;
-
-	void Notify(GameObject* gameObject, Event event, GameObject* parent = nullptr) override;
-private:
-	GameObject* m_GameObject;
-	std::string m_Name;
-};
+//class PlayerObserver final : public Observer
+//{
+//public:
+//	PlayerObserver(GameObject* gameObject, const std::string& playerName);
+//	virtual ~PlayerObserver() = default;
+//
+//	void Notify(GameObject* gameObject, Event event, GameObject* parent = nullptr) override;
+//private:
+//	GameObject* m_GameObject;
+//	std::string m_Name;
+//};

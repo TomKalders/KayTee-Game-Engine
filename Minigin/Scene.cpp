@@ -35,6 +35,11 @@ bool Scene::IsActive()
 	return m_Active;
 }
 
+std::string Scene::GetName()
+{
+	return m_Name;
+}
+
 void Scene::Update(float dt)
 {
 	for(auto& object : m_Objects)

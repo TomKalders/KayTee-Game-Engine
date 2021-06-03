@@ -3,10 +3,10 @@
 enum class Event
 {
 	//Player Events
-	playerDamaged,
-	playerDied,
-	playerScored
-	
+	//playerDamaged,
+	//playerDied,
+	//playerScored
+	levelComplete
 };
 
 enum class SoundEvent

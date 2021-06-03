@@ -8,10 +8,10 @@ class Scene
 {
 	friend Scene& SceneManager::CreateScene(const std::string& name);
 public:
-	//void Add(const std::shared_ptr<SceneObject>& object);
 	void Add(GameObject* object);
 	void SetActive(bool active);
 	bool IsActive();
+	std::string GetName();
 
 	void Update(float dt);
 	void Render() const;
@@ -26,9 +26,7 @@ private:
 	explicit Scene(const std::string& name);
 
 	std::string m_Name;
-	//std::vector < std::shared_ptr<SceneObject>> m_Objects{};
 	std::vector<GameObject*> m_Objects;
-	//std::vector<Subject*> m_Subjects;
 
 	static unsigned int m_IdCounter;
 	bool m_Active;
