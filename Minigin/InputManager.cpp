@@ -10,7 +10,7 @@ dae::InputManager::~InputManager()
 bool dae::InputManager::ProcessInput()
 {
 
-	//// todo: read the input
+	//// TODO: Fix pressed function for keyboard
 	RtlZeroMemory(&m_CurrentState, sizeof(XINPUT_STATE));
 	DWORD result = XInputGetState(0, &m_CurrentState);
 
@@ -19,7 +19,7 @@ bool dae::InputManager::ProcessInput()
 		if (e.type == SDL_QUIT) {
 			return false;
 		}
-		if (e.type == SDL_KEYDOWN) {
+		if (e.type == SDL_KEYDOWN && e.key.repeat == 0) {
 			for (auto keyboardButton : m_KeyboardCommands)
 			{
 				if (e.key.keysym.scancode == keyboardButton.first)

@@ -1,0 +1,22 @@
+[
+    {
+        "gameobjects":
+        [
+            {
+                "type" : "Grid",
+                "rows" : 7,
+                "columns" : 7,
+                "cellsize" : 64
+            },
+            {
+                "type" : "Qbert",
+                "row" : 0,
+                "column" : 0
+            }
+
+        ]
+    },
+    {
+        "gameobjects"
+    }
+]

@@ -2,6 +2,7 @@
 #include <Minigin.h>
 #include "Scene.h"
 
+struct MovementControls;
 class GridComponent;
 class QBertApplication final : public dae::Minigin
 {
@@ -12,8 +13,11 @@ public:
 	void GameUpdate(float deltaTime) override;
 
 private:
-	
-	GameObject* CreateQbert(Scene& scene, const glm::vec2& position) const;
+	//Factories
+	GameObject* CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const;
+
+	//Helper Functions
+	void AssignControls(GameObject* player, GridComponent* grid, const MovementControls& controls) const;
 };
 
 

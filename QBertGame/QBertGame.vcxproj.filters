@@ -19,6 +19,9 @@
     <Filter Include="Commands">
       <UniqueIdentifier>{ae9528cf-beac-492f-8b00-55be56ba55db}</UniqueIdentifier>
     </Filter>
+    <Filter Include="Helpers">
+      <UniqueIdentifier>{548b2604-b50c-4de4-81dc-46b37dafa1f4}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="QBertGame.cpp">
@@ -55,6 +58,9 @@
     </ClInclude>
     <ClInclude Include="GridPosition.h">
       <Filter>Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="Structs.h">
+      <Filter>Helpers</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

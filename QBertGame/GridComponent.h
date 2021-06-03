@@ -2,6 +2,7 @@
 #include "BaseComponent.h"
 #include <map>
 
+
 namespace dae
 {
 class TextureComponent;
@@ -25,19 +26,27 @@ public:
 
 	void Initialize() override;
 	
-	glm::ivec2 GetGridLocation(int row, int column);
-	glm::ivec2 GetGridCenter(int row, int column);
-	bool ValidGridCoordinate(int row, int column);
+	glm::ivec2 GetGridLocation(int row, int column) const;
+	glm::ivec2 GetGridCenter(int row, int column) const;
+	bool ValidGridCoordinate(int row, int column) const;
 
+	void SetNrOfTriggers(int nrOfTriggers);
 	void ActivateCell(int row, int column);
+	void RetriggerCells(bool retrigger);
+	bool RetriggerCells() const;
+	bool AllCellsActive() const;
 private:
-	//std::vector<glm::vec2> m_CellPositions;
 	std::map<int, TextureComponent*> m_Sprites;
+	std::map<int, bool> m_Cells;
+	std::map<int, int> m_TimesSteppedOn;
+	
 	glm::ivec2 m_Position;
 	int m_Width;
 	int m_Height;
 	int m_CellSize;
 
+	bool m_Retrigger;
+	int m_NrOfTriggers;
+
 	void CreateGrid();
 };
-

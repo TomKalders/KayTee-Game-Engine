@@ -48,6 +48,16 @@ void dae::GameObject::AddComponent(BaseComponent* component)
 	m_Components.push_back(component);
 }
 
+void dae::GameObject::SetTag(const std::string& tag)
+{
+	m_Tag = tag;
+}
+
+std::string dae::GameObject::GetTag() const
+{
+	return m_Tag;
+}
+
 //void dae::GameObject::SetSubject(Subject* subject)
 //{
 //	if (m_Subject)

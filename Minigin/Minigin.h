@@ -15,11 +15,13 @@ namespace dae
 		void Cleanup();
 		void Run();
 
+		void Quit();
 		glm::ivec2 GetWindowSize() const;
 		
 	private:
 		static const int MsPerFrame = 16; //16 for 60 fps, 33 for 30 fps
 		SDL_Window* m_Window{};
 		glm::ivec2 m_WindowSize{640, 480};
+		bool m_Running = true;
 	};
 }

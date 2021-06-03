@@ -24,8 +24,8 @@ namespace dae
 		void Render() const;
 		
 		void AddComponent(BaseComponent* component);
-		//void SetSubject(Subject* subject);
-		//Subject* GetSubject();
+		void SetTag(const std::string& tag);
+		std::string GetTag() const;
 
 		//Templated Functions
 		template <typename T>
@@ -36,7 +36,7 @@ namespace dae
 
 	private:
 		std::vector<BaseComponent*> m_Components;
-		//Subject* m_Subject;
+		std::string m_Tag;
 	};
 
 	//Templated Functions

@@ -26,9 +26,8 @@ dae::TextureComponent::TextureComponent(const std::string& filename, const glm::
 	m_spTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void dae::TextureComponent::Update(float dt)
+void dae::TextureComponent::Update(float)
 {
-	dt;
 }
 
 void dae::TextureComponent::Render() const

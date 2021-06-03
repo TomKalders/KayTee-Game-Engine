@@ -199,17 +199,13 @@ void dae::Minigin::Run()
 		//	this_thread::sleep_for(sleepTime);
 		//}
 		
-		bool running = true;
-		InputManager::GetInstance().AddCommand(SDL_SCANCODE_ESCAPE, InputType::released, new QuitCommand(&running));
-
-		
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		while(doContinue)
 		{
 			auto currentTime = std::chrono::high_resolution_clock::now();
 			float deltaTime = std::chrono::duration<float>(currentTime - lastTime).count();
 
-			doContinue = input.ProcessInput() && running;
+			doContinue = input.ProcessInput() && m_Running;
 			GameUpdate(deltaTime);
 			sceneManager.Update(deltaTime);
 			renderer.Render();
@@ -220,6 +216,11 @@ void dae::Minigin::Run()
 	}
 
 	Cleanup();
+}
+
+void dae::Minigin::Quit()
+{
+	m_Running = false;
 }
 
 glm::ivec2 dae::Minigin::GetWindowSize() const

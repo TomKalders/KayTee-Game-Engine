@@ -221,6 +221,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
     <ClInclude Include="GridPosition.h" />
     <ClInclude Include="QBertApplication.h" />
     <ClInclude Include="QbertPCH.h" />
+    <ClInclude Include="Structs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
