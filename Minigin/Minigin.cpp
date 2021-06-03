@@ -25,7 +25,7 @@
 using namespace std;
 using namespace std::chrono;
 
-void dae::Minigin::Initialize()
+void Minigin::Initialize()
 {
 	if (SDL_Init(SDL_INIT_VIDEO) != 0) 
 	{
@@ -55,7 +55,7 @@ void dae::Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void dae::Minigin::LoadGame() const
+void Minigin::LoadGame() const
 {
 	/*
 	//Create Scene
@@ -161,7 +161,7 @@ void dae::Minigin::LoadGame() const
 	GameLoad();
 }
 
-void dae::Minigin::Cleanup()
+void Minigin::Cleanup()
 {
 	GameCleanup();
 	Renderer::GetInstance().Destroy();
@@ -172,7 +172,7 @@ void dae::Minigin::Cleanup()
 	SDL_Quit();
 }
 
-void dae::Minigin::Run()
+void Minigin::Run()
 {
 	Initialize();
 
@@ -218,12 +218,12 @@ void dae::Minigin::Run()
 	Cleanup();
 }
 
-void dae::Minigin::Quit()
+void Minigin::Quit()
 {
 	m_Running = false;
 }
 
-glm::ivec2 dae::Minigin::GetWindowSize() const
+glm::ivec2 Minigin::GetWindowSize() const
 {
 	return m_WindowSize;
 }

@@ -3,18 +3,18 @@
 #include "GameObject.h"
 #include "Components.h"
 
-dae::Observer::Observer()
+Observer::Observer()
 {
 }
 
 //Player Observer
-dae::PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName)
+PlayerObserver::PlayerObserver(GameObject* gameObject, const std::string& playerName)
 	: m_GameObject(gameObject)
 	, m_Name(playerName)
 {
 }
 
-void dae::PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* parent)
+void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* parent)
 {
 	if (parent && gameObject == m_GameObject)
 	{

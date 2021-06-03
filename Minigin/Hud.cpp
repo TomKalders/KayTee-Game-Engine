@@ -1,11 +1,11 @@
 ﻿#include "MiniginPCH.h"
 #include "Hud.h"
 
-dae::Hud::Hud()
+Hud::Hud()
 {
 }
 
-dae::Hud::~Hud()
+Hud::~Hud()
 {
 	for (BaseElement* element : m_Elements)
 	{
@@ -14,12 +14,12 @@ dae::Hud::~Hud()
 	}
 }
 
-void dae::Hud::AddElement(BaseElement* element)
+void Hud::AddElement(BaseElement* element)
 {
 	m_Elements.push_back(element);
 }
 
-void dae::Hud::Render()
+void Hud::Render()
 {
 	for (BaseElement* element : m_Elements)
 	{

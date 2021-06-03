@@ -4,26 +4,26 @@
 #include "TextComponent.h"
 #include "SubjectComponent.h"
 
-dae::HealthComponent::HealthComponent(int health)
+HealthComponent::HealthComponent(int health)
 	: m_Health(health)
 	, m_MaxHealth(health)
 	, m_pSubjectComponent{nullptr}
 {
 }
 
-dae::HealthComponent::~HealthComponent()
+HealthComponent::~HealthComponent()
 {
 }
 
-void dae::HealthComponent::Update(float)
+void HealthComponent::Update(float)
 {
 }
 
-void dae::HealthComponent::Render() const
+void HealthComponent::Render() const
 {
 }
 
-void dae::HealthComponent::Damage(int damage)
+void HealthComponent::Damage(int damage)
 {
 	m_Health -= damage;
 
@@ -46,7 +46,7 @@ void dae::HealthComponent::Damage(int damage)
 	}
 }
 
-void dae::HealthComponent::Heal(int health)
+void HealthComponent::Heal(int health)
 {
 	m_Health += health;
 
@@ -54,12 +54,12 @@ void dae::HealthComponent::Heal(int health)
 		m_Health = m_MaxHealth;
 }
 
-int dae::HealthComponent::GetHealth() const
+int HealthComponent::GetHealth() const
 {
 	return m_Health;
 }
 
-void dae::HealthComponent::SetHealth(int health)
+void HealthComponent::SetHealth(int health)
 {
 	m_Health = health;
 

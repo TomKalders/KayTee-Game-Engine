@@ -6,8 +6,7 @@
 
 #include "BaseComponent.h"
 
-namespace dae
-{
+
 	class Transform final: public BaseComponent
 	{
 	public:
@@ -22,4 +21,3 @@ namespace dae
 	private:
 		glm::vec3 m_Position;
 	};
-}

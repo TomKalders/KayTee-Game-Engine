@@ -5,32 +5,28 @@
 #include <glm/glm.hpp>
 #pragma warning(pop)
 
-namespace dae
+class Texture2D;
+
+class TextureComponent : public BaseComponent
 {
-	class Texture2D;
+public:
+	TextureComponent(const std::string& filename);
+	TextureComponent(const std::string& filename, const glm::vec2& position);
+	virtual ~TextureComponent() = default;
+	TextureComponent(const TextureComponent& other) = delete;
+	TextureComponent(TextureComponent&& other) = delete;
+	TextureComponent& operator=(const TextureComponent& other) = delete;
+	TextureComponent& operator=(TextureComponent&& other) = delete;
 
-	class TextureComponent : public BaseComponent
-	{
-	public:
-		TextureComponent(const std::string& filename);
-		TextureComponent(const std::string& filename, const glm::vec2& position);
-		virtual ~TextureComponent() = default;
-		TextureComponent(const TextureComponent& other) = delete;
-		TextureComponent(TextureComponent&& other) = delete;
-		TextureComponent& operator=(const TextureComponent& other) = delete;
-		TextureComponent& operator=(TextureComponent&& other) = delete;
+	void Update(float dt) override;
+	void Render() const override;
 
-		void Update(float dt) override;
-		void Render() const override;
+	void SetTexture(const std::string& filename);
+	void SetTexture(std::shared_ptr<Texture2D> texture);
+	std::shared_ptr<Texture2D> GetTexture();
 
-		void SetTexture(const std::string& filename);
-		void SetTexture(std::shared_ptr<Texture2D> texture);
-		std::shared_ptr<Texture2D> GetTexture();
-
-	private:
-		std::shared_ptr<Texture2D> m_spTexture;
-		glm::vec2 m_Position;
-		bool m_CustomPosition;
-	};
-}
-
+private:
+	std::shared_ptr<Texture2D> m_spTexture;
+	glm::vec2 m_Position;
+	bool m_CustomPosition;
+};

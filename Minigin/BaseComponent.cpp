@@ -2,35 +2,35 @@
 #include "BaseComponent.h"
 #include "GameObject.h"
 
-dae::BaseComponent::BaseComponent()
+BaseComponent::BaseComponent()
 	: m_pParent(nullptr)
 {
 	
 }
 
-dae::BaseComponent::BaseComponent(GameObject* parent)
+BaseComponent::BaseComponent(GameObject* parent)
 	: m_pParent(parent)
 {
 }
 
-dae::BaseComponent::~BaseComponent()
+BaseComponent::~BaseComponent()
 {
 }
 
-void dae::BaseComponent::Initialize()
+void BaseComponent::Initialize()
 {
 }
 
-void dae::BaseComponent::Update(float dt)
+void BaseComponent::Update(float dt)
 {
 	dt;
 }
 
-void dae::BaseComponent::Render() const
+void BaseComponent::Render() const
 {
 }
 
-void dae::BaseComponent::SetParent(GameObject* parent)
+void BaseComponent::SetParent(GameObject* parent)
 {
 	m_pParent = parent;
 }

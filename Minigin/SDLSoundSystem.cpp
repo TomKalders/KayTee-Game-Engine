@@ -2,7 +2,7 @@
 #include "SDL_mixer.h"
 #include "SDLSoundSystem.h"
 
-dae::SDLSoundSystem::SDLSoundSystem()
+SDLSoundSystem::SDLSoundSystem()
 	: m_SoundMutex{}
 	, m_NextID{0}
 	, m_IsRunning(true)
@@ -11,7 +11,7 @@ dae::SDLSoundSystem::SDLSoundSystem()
 	CreateThread();
 }
 
-dae::SDLSoundSystem::~SDLSoundSystem()
+SDLSoundSystem::~SDLSoundSystem()
 {
 	m_IsRunning = false;
 	if (m_Thread->joinable())
@@ -22,7 +22,7 @@ dae::SDLSoundSystem::~SDLSoundSystem()
 	Mix_CloseAudio();
 }
 
-dae::SoundID dae::SDLSoundSystem::AddSound(Sound sound)
+SoundID SDLSoundSystem::AddSound(Sound sound)
 {
 	std::lock_guard<std::mutex> soundLock{ m_SoundMutex };
 	m_Sounds[m_NextID] = sound;
@@ -30,12 +30,12 @@ dae::SoundID dae::SDLSoundSystem::AddSound(Sound sound)
 	return m_NextID - 1;
 }
 
-void dae::SDLSoundSystem::Play(const SoundID id, const float volume)
+void SDLSoundSystem::Play(const SoundID id, const float volume)
 {
 	AddToQueue(id, volume);
 }
 
-void dae::SDLSoundSystem::CreateThread()
+void SDLSoundSystem::CreateThread()
 {
 	if (!m_Thread)
 	{
@@ -69,7 +69,7 @@ void dae::SDLSoundSystem::CreateThread()
 	}
 }
 
-void dae::SDLSoundSystem::AddToQueue(SoundID id, float volume)
+void SDLSoundSystem::AddToQueue(SoundID id, float volume)
 {
 	std::lock_guard<std::mutex> soundLock{ m_SoundMutex };
 	m_SoundQueue.push(std::pair<SoundID, float>(id, volume));

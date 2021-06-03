@@ -10,7 +10,7 @@
 #include "HudElements.h"
 #include "TextureComponent.h"
 
-dae::TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const glm::vec3& color)
+TextComponent::TextComponent(const std::string& text, const std::shared_ptr<Font>& font, const glm::vec3& color)
 	: BaseComponent()
 	, m_NeedsUpdate(true)
 	, m_Text(text)
@@ -20,7 +20,7 @@ dae::TextComponent::TextComponent(const std::string& text, const std::shared_ptr
 {
 }
 
-void dae::TextComponent::Update(float dt)
+void TextComponent::Update(float dt)
 {
 	dt;
 	if (m_NeedsUpdate)
@@ -47,12 +47,12 @@ void dae::TextComponent::Update(float dt)
 	}
 }
 
-void dae::TextComponent::Render() const
+void TextComponent::Render() const
 {
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextComponent::SetText(const std::string& text)
+void TextComponent::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;
@@ -61,7 +61,7 @@ void dae::TextComponent::SetText(const std::string& text)
 		m_pHudElement->SetText(text);
 }
 
-void dae::TextComponent::SetColor(const glm::vec3& color)
+void TextComponent::SetColor(const glm::vec3& color)
 {
 	m_Color = color;
 
@@ -69,7 +69,7 @@ void dae::TextComponent::SetColor(const glm::vec3& color)
 		m_pHudElement->SetColor(color);
 }
 
-void dae::TextComponent::SetTextElement(TextElement* textElement)
+void TextComponent::SetTextElement(TextElement* textElement)
 {
 	m_pHudElement = textElement;
 }

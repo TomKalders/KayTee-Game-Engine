@@ -2,12 +2,12 @@
 #include "InputManager.h"
 #include <iostream>
 
-dae::InputManager::~InputManager()
+InputManager::~InputManager()
 {
 	Destroy();
 }
 
-bool dae::InputManager::ProcessInput()
+bool InputManager::ProcessInput()
 {
 
 	//// TODO: Fix pressed function for keyboard
@@ -90,7 +90,7 @@ bool dae::InputManager::ProcessInput()
 	return true;
 }
 
-bool dae::InputManager::IsPressed(ControllerButton button)
+bool InputManager::IsPressed(ControllerButton button)
 {
 	if (m_CurrentState.Gamepad.wButtons & int(button))
 	{
@@ -104,7 +104,7 @@ bool dae::InputManager::IsPressed(ControllerButton button)
 	return false;
 }
 
-bool dae::InputManager::IsReleased(ControllerButton button)
+bool InputManager::IsReleased(ControllerButton button)
 {
 	if (!(m_CurrentState.Gamepad.wButtons & int(button)))
 	{
@@ -118,12 +118,12 @@ bool dae::InputManager::IsReleased(ControllerButton button)
 	return false;
 }
 
-bool dae::InputManager::IsHeld(ControllerButton button)
+bool InputManager::IsHeld(ControllerButton button)
 {
 	return m_PressedButtons[button];
 }
 
-void dae::InputManager::AddCommand(ControllerButton button, InputType inputType, Command* command)
+void InputManager::AddCommand(ControllerButton button, InputType inputType, Command* command)
 {
 	if (m_ControllerCommands.find(button) == m_ControllerCommands.end())
 	{
@@ -175,7 +175,7 @@ void dae::InputManager::AddCommand(ControllerButton button, InputType inputType,
 	}
 }
 
-void dae::InputManager::AddCommand(SDL_Scancode SDLButton, InputType inputType, Command* command)
+void InputManager::AddCommand(SDL_Scancode SDLButton, InputType inputType, Command* command)
 {
 	if (m_KeyboardCommands.find(SDLButton) == m_KeyboardCommands.end())
 	{
@@ -227,7 +227,7 @@ void dae::InputManager::AddCommand(SDL_Scancode SDLButton, InputType inputType, 
 	}
 }
 
-void dae::InputManager::Destroy()
+void InputManager::Destroy()
 {
 	for (auto button : m_ControllerCommands)
 	{

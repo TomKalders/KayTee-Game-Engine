@@ -4,8 +4,7 @@
 
 class BaseComponent;
 
-namespace dae
-{
+
 	class Texture2D;
 	class Subject;
 	
@@ -68,5 +67,4 @@ namespace dae
 		}
 		return components;
 	}
-}
 

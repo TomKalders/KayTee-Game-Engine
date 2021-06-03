@@ -4,14 +4,14 @@
 #include "Subject.h"
 #include "SubjectComponent.h"
 
-dae::ScoreComponent::ScoreComponent()
+ScoreComponent::ScoreComponent()
 	: m_Score(0)
 	, m_pSubjectComponent{ nullptr }
 {
 	
 }
 
-void dae::ScoreComponent::AddScore(int amount)
+void ScoreComponent::AddScore(int amount)
 {
 	m_Score += amount;
 	
@@ -22,7 +22,7 @@ void dae::ScoreComponent::AddScore(int amount)
 		m_pSubjectComponent->Notify(m_pParent, Event::playerScored);
 }
 
-int dae::ScoreComponent::GetScore() const
+int ScoreComponent::GetScore() const
 {
 	return m_Score;
 }

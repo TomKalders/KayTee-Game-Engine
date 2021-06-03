@@ -11,14 +11,14 @@
 #include "TextComponent.h"
 
 
-dae::TextureComponent::TextureComponent(const std::string& filename)
+TextureComponent::TextureComponent(const std::string& filename)
 	: BaseComponent()
 	, m_CustomPosition(false)
 {
 	m_spTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-dae::TextureComponent::TextureComponent(const std::string& filename, const glm::vec2& position)
+TextureComponent::TextureComponent(const std::string& filename, const glm::vec2& position)
 	: BaseComponent()
 	, m_Position(position)
 	, m_CustomPosition(true)
@@ -26,11 +26,11 @@ dae::TextureComponent::TextureComponent(const std::string& filename, const glm::
 	m_spTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void dae::TextureComponent::Update(float)
+void TextureComponent::Update(float)
 {
 }
 
-void dae::TextureComponent::Render() const
+void TextureComponent::Render() const
 {
 	if (m_pParent && m_spTexture)
 	{
@@ -41,17 +41,17 @@ void dae::TextureComponent::Render() const
 	}
 }
 
-void dae::TextureComponent::SetTexture(const std::string& filename)
+void TextureComponent::SetTexture(const std::string& filename)
 {
 	m_spTexture = ResourceManager::GetInstance().LoadTexture(filename);
 }
 
-void dae::TextureComponent::SetTexture(std::shared_ptr<Texture2D> texture)
+void TextureComponent::SetTexture(std::shared_ptr<Texture2D> texture)
 {
 	m_spTexture = texture;
 }
 
-std::shared_ptr<dae::Texture2D> dae::TextureComponent::GetTexture()
+std::shared_ptr<Texture2D> TextureComponent::GetTexture()
 {
 	return m_spTexture;
 }

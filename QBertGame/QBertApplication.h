@@ -4,7 +4,7 @@
 
 struct MovementControls;
 class GridComponent;
-class QBertApplication final : public dae::Minigin
+class QBertApplication final : public Minigin
 {
 public:
 	void GameInitialize() override;

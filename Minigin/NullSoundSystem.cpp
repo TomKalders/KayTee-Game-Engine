@@ -1,14 +1,14 @@
 ﻿#include "MiniginPCH.h"
 #include "NullSoundSystem.h"
 
-dae::NullSoundSystem::NullSoundSystem()
+NullSoundSystem::NullSoundSystem()
 {
 }
 
-dae::NullSoundSystem::~NullSoundSystem()
+NullSoundSystem::~NullSoundSystem()
 {
 }
 
-void dae::NullSoundSystem::Play(const SoundID , const float)
+void NullSoundSystem::Play(const SoundID , const float)
 {
 }

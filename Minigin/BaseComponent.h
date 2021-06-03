@@ -1,8 +1,7 @@
 ﻿#pragma once
 //#include "GameObject.h"
 
-namespace dae
-{
+
 	class GameObject;
 	
 	class BaseComponent
@@ -21,4 +20,3 @@ namespace dae
 	protected:
 		GameObject* m_pParent;
 	};
-}

@@ -5,12 +5,12 @@
 #include "BaseComponent.h"
 #include "Subject.h"
 
-dae::GameObject::GameObject()
+GameObject::GameObject()
 {
 	AddComponent(new Transform());
 }
 
-dae::GameObject::~GameObject()
+GameObject::~GameObject()
 {
 	for (BaseComponent* component : m_Components)
 	{
@@ -25,7 +25,7 @@ dae::GameObject::~GameObject()
 	//}
 }
 
-void dae::GameObject::Update(float dt)
+void GameObject::Update(float dt)
 {
 	for (BaseComponent* component : m_Components)
 	{
@@ -33,7 +33,7 @@ void dae::GameObject::Update(float dt)
 	}
 }
 
-void dae::GameObject::Render() const
+void GameObject::Render() const
 {
 	for (BaseComponent* component : m_Components)
 	{
@@ -41,24 +41,24 @@ void dae::GameObject::Render() const
 	}
 }
 
-void dae::GameObject::AddComponent(BaseComponent* component)
+void GameObject::AddComponent(BaseComponent* component)
 {
 	component->SetParent(this);
 	component->Initialize();
 	m_Components.push_back(component);
 }
 
-void dae::GameObject::SetTag(const std::string& tag)
+void GameObject::SetTag(const std::string& tag)
 {
 	m_Tag = tag;
 }
 
-std::string dae::GameObject::GetTag() const
+std::string GameObject::GetTag() const
 {
 	return m_Tag;
 }
 
-//void dae::GameObject::SetSubject(Subject* subject)
+//void GameObject::SetSubject(Subject* subject)
 //{
 //	if (m_Subject)
 //	{
@@ -69,7 +69,7 @@ std::string dae::GameObject::GetTag() const
 //	m_Subject = subject;
 //}
 
-//dae::Subject* dae::GameObject::GetSubject()
+//Subject* GameObject::GetSubject()
 //{
 //	return m_Subject;
 //}

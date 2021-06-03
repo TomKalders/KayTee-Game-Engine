@@ -2,18 +2,18 @@
 #include "ServiceLocator.h"
 
 
-dae::NullSoundSystem dae::ServiceLocator::m_NullSoundSystem{};
-dae::SoundSystem* dae::ServiceLocator::m_pSoundSystem = &ServiceLocator::m_NullSoundSystem;
+NullSoundSystem ServiceLocator::m_NullSoundSystem{};
+SoundSystem* ServiceLocator::m_pSoundSystem = &ServiceLocator::m_NullSoundSystem;
 
-dae::ServiceLocator::ServiceLocator()
+ServiceLocator::ServiceLocator()
 {
 }
 
-dae::ServiceLocator::~ServiceLocator()
+ServiceLocator::~ServiceLocator()
 {
 }
 
-void dae::ServiceLocator::RegisterSoundSystem(SoundSystem* soundSystem)
+void ServiceLocator::RegisterSoundSystem(SoundSystem* soundSystem)
 {
 	if (!soundSystem)
 		m_pSoundSystem = &m_NullSoundSystem;
@@ -22,7 +22,7 @@ void dae::ServiceLocator::RegisterSoundSystem(SoundSystem* soundSystem)
 	m_pSoundSystem = soundSystem;
 }
 
-dae::SoundSystem* dae::ServiceLocator::GetSoundSystem()
+SoundSystem* ServiceLocator::GetSoundSystem()
 {
 	if (m_pSoundSystem)
 		return m_pSoundSystem;
@@ -30,7 +30,7 @@ dae::SoundSystem* dae::ServiceLocator::GetSoundSystem()
 	return nullptr;
 }
 
-void dae::ServiceLocator::DestroySoundService()
+void ServiceLocator::DestroySoundService()
 {
 	if (m_pSoundSystem && (m_pSoundSystem != &m_NullSoundSystem))
 		delete m_pSoundSystem;

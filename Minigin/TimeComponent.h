@@ -2,28 +2,23 @@
 #include "BaseComponent.h"
 #include "TextComponent.h"
 
-namespace dae
+class TimeComponent final : public BaseComponent
 {
-	class TimeComponent final : public BaseComponent
-	{
-	public:
-		TimeComponent();
-		virtual ~TimeComponent() = default;
-		TimeComponent(const TimeComponent& other) = delete;
-		TimeComponent(TimeComponent&& other) = delete;
-		TimeComponent& operator=(const TimeComponent& other) = delete;
-		TimeComponent& operator=(TimeComponent&& other) = delete;
+public:
+	TimeComponent();
+	virtual ~TimeComponent() = default;
+	TimeComponent(const TimeComponent& other) = delete;
+	TimeComponent(TimeComponent&& other) = delete;
+	TimeComponent& operator=(const TimeComponent& other) = delete;
+	TimeComponent& operator=(TimeComponent&& other) = delete;
 
-		void Update(float dt) override;
-		void Render() const override;
+	void Update(float dt) override;
+	void Render() const override;
 
-		int GetFPS() const;
+	int GetFPS() const;
 
-	private:
-		int m_FPS;
-		TextComponent* m_TextComponent;
-		
-	};
-}
-
-
+private:
+	int m_FPS;
+	TextComponent* m_TextComponent;
+	
+};

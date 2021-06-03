@@ -97,7 +97,7 @@ void GridComponent::CreateGrid()
 		for (int y{}; y <= x; y++)
 		{
 			auto pos = GetGridLocation(x, y);
-			auto sprite = new dae::TextureComponent{ "Sprites/GridBlock.png", pos };
+			auto sprite = new TextureComponent{ "Sprites/GridBlock.png", pos };
 			int index = x + y * m_Width;
 			m_Sprites.insert(std::make_pair(index, sprite));
 			m_Cells.insert(std::make_pair(index, false));

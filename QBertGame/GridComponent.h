@@ -3,18 +3,9 @@
 #include <map>
 
 
-namespace dae
-{
 class TextureComponent;
-}
 
-//struct CmpIVec2 {
-//	bool operator()(const glm::ivec2& a, const glm::ivec2& b) const {
-//		return a.length() < b.length();
-//	}
-//};
-
-class GridComponent : public dae::BaseComponent
+class GridComponent : public BaseComponent
 {
 public:
 	GridComponent(const glm::vec2& position, int width, int height, int cellSize);

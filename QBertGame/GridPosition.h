@@ -1,7 +1,7 @@
 ﻿#pragma once
 #include "BaseComponent.h"
 
-class GridPosition final : public dae::BaseComponent
+class GridPosition final : public BaseComponent
 {
 public:
 	GridPosition(const glm::ivec2& coordinates);

@@ -8,13 +8,13 @@
 #include "Texture2D.h"
 #include "GameObject.h"
 
-dae::TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font) 
+TextObject::TextObject(const std::string& text, const std::shared_ptr<Font>& font) 
 	: m_NeedsUpdate(true), m_Text(text), m_Font(font), m_Texture(nullptr)
 {
 	
 }
 
-void dae::TextObject::Update(float dt)
+void TextObject::Update(float dt)
 {
 	dt;
 	if (m_NeedsUpdate)
@@ -36,7 +36,7 @@ void dae::TextObject::Update(float dt)
 	}
 }
 
-void dae::TextObject::Render() const
+void TextObject::Render() const
 {
 	if (m_Texture != nullptr)
 	{
@@ -47,7 +47,7 @@ void dae::TextObject::Render() const
 }
 
 // This implementation uses the "dirty flag" pattern
-void dae::TextObject::SetText(const std::string& text)
+void TextObject::SetText(const std::string& text)
 {
 	m_Text = text;
 	m_NeedsUpdate = true;

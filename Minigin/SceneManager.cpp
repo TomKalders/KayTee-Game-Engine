@@ -2,7 +2,7 @@
 #include "SceneManager.h"
 #include "Scene.h"
 
-void dae::SceneManager::Update(float dt)
+void SceneManager::Update(float dt)
 {
 	if (dt)
 
@@ -13,7 +13,7 @@ void dae::SceneManager::Update(float dt)
 	}
 }
 
-void dae::SceneManager::Render()
+void SceneManager::Render()
 {
 	for (const auto& scene : m_Scenes)
 	{
@@ -22,7 +22,7 @@ void dae::SceneManager::Render()
 	}
 }
 
-dae::Scene& dae::SceneManager::CreateScene(const std::string& name)
+Scene& SceneManager::CreateScene(const std::string& name)
 {
 	const auto scene = std::shared_ptr<Scene>(new Scene(name));
 	m_Scenes.push_back(scene);

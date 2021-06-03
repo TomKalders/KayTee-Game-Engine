@@ -1,10 +1,10 @@
 ﻿#include "MiniginPCH.h"
 #include "SoundSystem.h"
 
-dae::SoundSystem::SoundSystem()
+SoundSystem::SoundSystem()
 {
 }
 
-dae::SoundSystem::~SoundSystem()
+SoundSystem::~SoundSystem()
 {
 }

@@ -1,32 +1,32 @@
 ﻿#include "MiniginPCH.h"
 #include "SubjectComponent.h"
 
-dae::SubjectComponent::SubjectComponent()
+SubjectComponent::SubjectComponent()
 	: m_pSubject(new Subject{})
 {
 }
 
-dae::SubjectComponent::~SubjectComponent()
+SubjectComponent::~SubjectComponent()
 {
 	delete m_pSubject;
 	m_pSubject = nullptr;
 }
 
-void dae::SubjectComponent::Update(float)
+void SubjectComponent::Update(float)
 {
 }
 
-void dae::SubjectComponent::Render() const
+void SubjectComponent::Render() const
 {
 }
 
-void dae::SubjectComponent::AddObserver(ObserverComponent* observer)
+void SubjectComponent::AddObserver(ObserverComponent* observer)
 {
 	//m_pSubject->AddObserver(observer);
 	m_Observers.push_back(observer);
 }
 
-void dae::SubjectComponent::RemoveObserver(ObserverComponent* observer)
+void SubjectComponent::RemoveObserver(ObserverComponent* observer)
 {
 	//m_pSubject->RemoveObserver(observer);
 	std::vector<ObserverComponent*>::iterator it = std::find(m_Observers.begin(), m_Observers.end(), observer);
@@ -38,7 +38,7 @@ void dae::SubjectComponent::RemoveObserver(ObserverComponent* observer)
 	}
 }
 
-void dae::SubjectComponent::Notify(GameObject* gameObject, Event event)
+void SubjectComponent::Notify(GameObject* gameObject, Event event)
 {
 	for (ObserverComponent* observer : m_Observers)
 	{
