@@ -3,6 +3,7 @@
 #include "imgui.h"
 
 CustomUIRenderer::CustomUIRenderer()
+	: m_LoadGamePressed(false)
 {
 }
 

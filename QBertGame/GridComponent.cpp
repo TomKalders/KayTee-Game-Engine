@@ -69,16 +69,17 @@ void GridComponent::ActivateCell(int row, int column)
 	{
 		bool triggered = m_Cells.at(index);
 		bool result = !(m_Retrigger && triggered);
-		m_Cells.at(index) = result;
 		++m_TimesSteppedOn.at(index);
 		
 		if (result && m_TimesSteppedOn.at(index) >= m_NrOfTriggers)
 		{
 			it->second->SetTexture("Sprites/GridBlockActive.png");
+			m_Cells.at(index) = true;
 		}
 		else
 		{
 			it->second->SetTexture("Sprites/GridBlock.png");
+			m_Cells.at(index) = false;
 		}
 	}
 

@@ -55,7 +55,7 @@ void Minigin::Initialize()
 /**
  * Code constructing the scene world starts here
  */
-void Minigin::LoadGame() const
+void Minigin::LoadGame()
 {
 	/*
 	//Create Scene

@@ -34,6 +34,12 @@ void Move::Execute()
 				m_pGrid->ActivateCell(coords.x, coords.y);
 				std::cout << coords.x << ", " << coords.y << "\n";
 			}
+			else
+			{
+				auto subject = m_pPlayer->GetComponent<SubjectComponent>();
+				if (subject)
+					subject->Notify(m_pPlayer, Event::playerDamaged);
+			}
 		}
 	}
 }

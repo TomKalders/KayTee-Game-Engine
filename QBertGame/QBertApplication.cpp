@@ -6,6 +6,7 @@
 #include "InputManager.h"
 #include "Renderer.h"
 #include "CustomUIRenderer.h"
+#include "CustomObservers.h"
 #include "Structs.h"
 
 //Components
@@ -25,13 +26,14 @@
 void QBertApplication::GameInitialize()
 {
 	Renderer::GetInstance().SetUIRenderer(new CustomUIRenderer{});
+	m_CurrentLevel = 1;
+	m_MaxLevel = 4;
+	m_LoadNextLevel = false;
 }
 
-void QBertApplication::GameLoad() const
+void QBertApplication::GameLoad()
 {
-	Scene& scene = SceneManager::GetInstance().CreateScene("Level1");
-	auto objects = ParseLevel(scene, "Data/Level/Level1.json");
-	
+	LoadLevel(m_CurrentLevel);
 }
 
 void QBertApplication::GameCleanup()
@@ -40,6 +42,30 @@ void QBertApplication::GameCleanup()
 
 void QBertApplication::GameUpdate(float)
 {
+	if (m_LoadNextLevel)
+	{
+		if (m_CurrentLevel == m_MaxLevel - 1)
+			Quit();
+		else
+		{
+			LoadNextLevel();
+			m_LoadNextLevel = false;
+		}
+	}
+}
+
+void QBertApplication::LoadLevel(int levelNr)
+{
+	std::string sceneName{ "Level" + std::to_string(levelNr) };
+	Scene& scene = SceneManager::GetInstance().CreateScene(sceneName);
+	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json");
+	SceneManager::GetInstance().SetActiveScene(sceneName);
+}
+
+void QBertApplication::LoadNextLevel()
+{
+	++m_CurrentLevel;
+	LoadLevel(m_CurrentLevel);
 }
 
 GameObject* QBertApplication::CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const
@@ -82,7 +108,7 @@ void QBertApplication::AssignControls(GameObject* player, GridComponent* grid, c
 	InputManager::GetInstance().AddCommand(controls.ControllerLeftUp, InputType::released, new MoveLeftUp{ player, grid });
 }
 
-std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::string& filename) const
+std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::string& filename)
 {
 	GridComponent* pGrid = nullptr;
 	std::vector<GameObject*> gameObjects{};
@@ -95,7 +121,6 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 		rapidjson::Document doc;
 		doc.Parse(json.c_str());
 
-		//const rapidjson::Value& gameobjects = doc["gameobjects"];
 		for (auto layerIt{ doc.Begin()}; layerIt < doc.End(); layerIt++)
 		{
 			const rapidjson::Value& layer = (*layerIt);
@@ -120,6 +145,18 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 					pGrid = grid->GetComponent<GridComponent>();
 					gameObjects.push_back(grid);
 					grid->SetTag("Grid");
+
+					//Add the observers & subjects
+					GameObject* levelObserver{ new GameObject{} };
+					levelObserver->SetTag("Observer");
+					ObserverComponent* observer = new ObserverComponent{ new GridObserver{m_LoadNextLevel} };
+					levelObserver->AddComponent(observer);
+
+					auto subject = grid->GetComponent<SubjectComponent>();
+					if (subject)
+						subject->AddObserver(observer);
+					
+					scene.Add(levelObserver);
 				}
 				//Read player from file
 				else if (type == "Qbert")

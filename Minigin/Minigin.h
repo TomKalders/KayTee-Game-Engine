@@ -6,11 +6,11 @@ class Minigin
 {
 public:
 	virtual void GameInitialize() = 0;
-	virtual void GameLoad() const = 0;
+	virtual void GameLoad() = 0;
 	virtual void GameCleanup() = 0;
 	virtual void GameUpdate(float deltaTime) = 0;
 	void Initialize();
-	void LoadGame() const;
+	void LoadGame();
 	void Cleanup();
 	void Run();
 
