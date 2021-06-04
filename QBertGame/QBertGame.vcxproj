@@ -208,6 +208,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
     <ClCompile Include="CustomUIRenderer.cpp" />
     <ClCompile Include="GridComponent.cpp" />
     <ClCompile Include="GridPosition.cpp" />
+    <ClCompile Include="CoillyMoveComponent.cpp" />
     <ClCompile Include="QBertApplication.cpp" />
     <ClCompile Include="QBertGame.cpp" />
     <ClCompile Include="QbertPCH.cpp">
@@ -223,6 +224,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
     <ClInclude Include="CustomUIRenderer.h" />
     <ClInclude Include="GridComponent.h" />
     <ClInclude Include="GridPosition.h" />
+    <ClInclude Include="CoillyMoveComponent.h" />
     <ClInclude Include="QBertApplication.h" />
     <ClInclude Include="QbertPCH.h" />
     <ClInclude Include="Structs.h" />

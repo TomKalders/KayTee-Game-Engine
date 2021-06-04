@@ -21,6 +21,8 @@ public:
 	
 	glm::ivec2 GetGridLocation(int row, int column) const;
 	glm::ivec2 GetGridCenter(int row, int column) const;
+	int GetHeight();
+	int GetWidth();
 	bool ValidGridCoordinate(int row, int column) const;
 
 	void SetNrOfTriggers(int nrOfTriggers);

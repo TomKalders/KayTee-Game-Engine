@@ -4,6 +4,7 @@
 
 struct MovementControls;
 class GridComponent;
+class GridPosition;
 class ObserverComponent;
 
 class QBertApplication final : public Minigin
@@ -19,6 +20,7 @@ public:
 private:
 	//Factories
 	GameObject* CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const;
+	GameObject* CreateCoilly(Scene& scene, GridComponent* grid, GridPosition* playerPos, const glm::ivec2& coords);
 	GameObject* CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const;
 	
 	//Helper Functions

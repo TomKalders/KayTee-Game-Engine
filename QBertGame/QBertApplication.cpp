@@ -13,6 +13,7 @@
 #include "Components.h"
 #include "GridComponent.h"
 #include "GridPosition.h"
+#include "CoillyMoveComponent.h"
 
 //Commands
 #include "CustomCommands.h"
@@ -25,6 +26,7 @@
 
 void QBertApplication::GameInitialize()
 {
+	srand(unsigned int(std::time(nullptr)));
 	Renderer::GetInstance().SetUIRenderer(new CustomUIRenderer{});
 	m_CurrentLevel = 1;
 	m_MaxLevel = 4;
@@ -60,6 +62,24 @@ void QBertApplication::LoadLevel(int levelNr)
 	Scene& scene = SceneManager::GetInstance().CreateScene(sceneName);
 	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json");
 	SceneManager::GetInstance().SetActiveScene(sceneName);
+
+	//Create Enemies
+	GridPosition* playerPos{};
+	GridComponent* pGrid{};
+	for (GameObject* object : objects)
+	{
+		if (object->GetTag() == "")
+		{
+			playerPos = object->GetComponent<GridPosition>();
+		}
+		else if (object->GetTag() == "Grid")
+		{
+			pGrid = object->GetComponent<GridComponent>();
+		}
+	}
+
+	if (playerPos && pGrid)
+		CreateCoilly(scene, pGrid, playerPos, { 1, 0 });
 }
 
 void QBertApplication::LoadNextLevel()
@@ -75,11 +95,26 @@ GameObject* QBertApplication::CreateQbert(Scene& scene, GridComponent* grid, con
 	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
 	qbert->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
 	qbert->AddComponent(new TextureComponent{ "Sprites/Qbert.png" });
+	qbert->AddComponent(new SubjectComponent{});
+	qbert->AddComponent(new HealthComponent{3});
+	qbert->AddComponent(new ScoreComponent{});
 	scene.Add(qbert);
 
 	AssignControls(qbert, grid, controls);
 
 	return qbert;
+}
+
+GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GridPosition* playerPos,const glm::ivec2& coords)
+{
+	GameObject* coilly = new GameObject{};
+	coilly->AddComponent(new GridPosition{ coords });
+	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
+	coilly->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
+	coilly->AddComponent(new TextureComponent{ "Sprites/CoillyBall.png" });
+	coilly->AddComponent(new CoillyMoveComponent{ grid, playerPos, 1});
+	scene.Add(coilly);
+	return coilly;
 }
 
 GameObject* QBertApplication::CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const
@@ -93,7 +128,6 @@ GameObject* QBertApplication::CreateGrid(Scene& scene, const glm::ivec2& gridPos
 	scene.Add(grid);
 	return grid;
 }
-
 
 void QBertApplication::AssignControls(GameObject* player, GridComponent* grid, const MovementControls& controls) const
 {
@@ -118,6 +152,8 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 	if (stream.is_open())
 	{
 		std::string json((std::istreambuf_iterator<char>(stream)),std::istreambuf_iterator<char>());
+		stream.close();
+		
 		rapidjson::Document doc;
 		doc.Parse(json.c_str());
 
@@ -176,6 +212,17 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 
 						auto pQbert = CreateQbert(scene, pGrid, { row, column }, controls);
 						gameObjects.push_back(pQbert);
+
+						GameObject* playerObserver = new GameObject{};
+						playerObserver->SetTag("PlayerObserver");
+						ObserverComponent* observer = new ObserverComponent{ new PlayerObserver{pQbert} };
+						playerObserver->AddComponent(observer);
+						
+						auto subject = pQbert->GetComponent<SubjectComponent>();
+						if (subject)
+							subject->AddObserver(observer);
+						
+						scene.Add(playerObserver);
 					}
 					else
 					{

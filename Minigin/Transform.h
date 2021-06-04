@@ -17,7 +17,9 @@
 		const glm::vec3& GetPosition() const;
 		void SetPosition(const glm::vec3& position);
 		void SetPosition(float x, float y, float z);
-
+		void AddPosition(const glm::vec3& position);
+		void AddPosition(float x, float y, float z);
+	
 	private:
 		glm::vec3 m_Position;
 	};

@@ -12,7 +12,9 @@ public:
 	GridPosition& operator=(GridPosition&& other) = delete;
 
 	glm::ivec2 GetCoordinates();
+	glm::ivec2 GetInitialCoordinates();
 	void SetCoordinates(const glm::ivec2& coordinates);
 private:
 	glm::ivec2 m_Coordinates;
+	glm::ivec2 m_InitialCoordinates;
 };

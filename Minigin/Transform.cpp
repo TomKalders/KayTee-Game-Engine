@@ -34,7 +34,13 @@ void Transform::SetPosition(float x, float y, float z)
 	m_Position.z = z;
 }
 
-//void Transform::SetPosition(const glm::vec2& position)
-//{
-//	m_Position = glm::vec3{ position, m_Position.z };
-//}
+void Transform::AddPosition(const glm::vec3& position)
+{
+	m_Position += position;
+}
+
+void Transform::AddPosition(float x, float y, float z)
+{
+	m_Position += glm::vec3{ x, y, z };
+}
+

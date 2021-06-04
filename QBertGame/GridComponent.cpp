@@ -53,6 +53,16 @@ glm::ivec2 GridComponent::GetGridCenter(int row, int column) const
 	return pos;
 }
 
+int GridComponent::GetHeight()
+{
+	return m_Height;
+}
+
+int GridComponent::GetWidth()
+{
+	return m_Width;
+}
+
 void GridComponent::SetNrOfTriggers(int nrOfTriggers)
 {
 	m_NrOfTriggers = nrOfTriggers;
