@@ -30,6 +30,7 @@ private:
 	GameObject* CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const;
 	GameObject* CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords);
 	GameObject* CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords, bool hasCoolGlasses);
+	GameObject* CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords, bool goingRight);
 	GameObject* CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const;
 	
 	//Helper Functions

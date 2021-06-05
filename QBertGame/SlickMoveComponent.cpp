@@ -3,9 +3,10 @@
 #include "GridComponent.h"
 #include "GridPosition.h"
 #include "ScoreComponent.h"
+#include "HealthComponent.h"
 #include "glm/gtc/random.hpp"
 
-SlickMoveComponent::SlickMoveComponent(GridComponent* pGrid, GameObject* pPlayer, float interval, float respawnTime)
+SlickMoveComponent::SlickMoveComponent(GridComponent* pGrid, GameObject* pPlayer, float interval, float respawnTime, int maxNrTiles)
 	: m_pGrid(pGrid)
 	, m_pCurrentPosition(nullptr)
 	, m_pPlayerPosition(nullptr)
@@ -15,9 +16,14 @@ SlickMoveComponent::SlickMoveComponent(GridComponent* pGrid, GameObject* pPlayer
 	, m_CurrentInterval(interval)
 	, m_RespawnTime(respawnTime)
 	, m_CurrentRespawnTime(respawnTime)
+	, m_NrOfTiles(maxNrTiles)
+	, m_TilesMoved(0)
 	, m_Disabled(true)
+	, m_HurtPlayer(false)
+	, m_ReverseTiles(true)
 	, m_SlickSleepingSpot({999, 999})
 {
+	m_MoveDirections = { {1, 0}, {1, 1} };
 }
 
 void SlickMoveComponent::Initialize()
@@ -34,7 +40,7 @@ void SlickMoveComponent::Initialize()
 
 void SlickMoveComponent::Update(float dt)
 {
-	if (CheckPlayerHit())
+	if (!m_HurtPlayer && CheckPlayerHit())
 	{
 		Disable();
 	}
@@ -66,33 +72,51 @@ void SlickMoveComponent::SetPlayer2(GameObject* pPlayer2)
 		m_pPlayer2Position = movement;
 }
 
+void SlickMoveComponent::SetMoveDirections(const std::vector<glm::ivec2>& moveDirs)
+{
+	m_MoveDirections = moveDirs;
+}
+
+void SlickMoveComponent::HurtPlayer(bool hurt)
+{
+	m_HurtPlayer = hurt;
+}
+
+void SlickMoveComponent::ReverseTiles(bool reverse)
+{
+	m_ReverseTiles = reverse;
+}
+
 void SlickMoveComponent::Move()
 {
-	if (m_pCurrentPosition->GetCoordinates().x < (m_pGrid->GetHeight()))
+	glm::ivec2 coords = m_pCurrentPosition->GetCoordinates();
+	if (!m_HurtPlayer && CheckPlayerHit())
 	{
-		glm::ivec2 coords = m_pCurrentPosition->GetCoordinates();
-		if (CheckPlayerHit())
-		{
-			Disable();
-			return;
-		}
-		int rand = glm::linearRand(0, 1);
-		coords.x += 1;
-		coords.y += rand;
+		Disable();
+		return;
+	}
+	int rand = glm::linearRand(0, int(m_MoveDirections.size() - 1));
+	coords += m_MoveDirections[rand];
+	
+	m_pCurrentPosition->SetCoordinates(coords);
+	auto pos = m_pGrid->GetGridCenter(coords.x, coords.y, true);
+	m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
 
-		m_pCurrentPosition->SetCoordinates(coords);
-		auto pos = m_pGrid->GetGridCenter(coords.x, coords.y, true);
-		m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
-
+	if (m_ReverseTiles)
 		m_pGrid->DeactivateCell(coords.x, coords.y);
 
-		if (CheckPlayerHit())
-			Disable();
-		
-		if (!m_pGrid->ValidGridCoordinate(coords.x, coords.y))
-		{
-			Disable();
-		}
+	if (CheckPlayerHit())
+		Disable();
+
+	++m_TilesMoved;
+	if (m_TilesMoved >= m_NrOfTiles)
+	{
+		Disable();
+	}
+
+	if (!m_pGrid->ValidGridCoordinate(coords.x, coords.y))
+	{
+		Disable();
 	}
 }
 
@@ -105,6 +129,7 @@ void SlickMoveComponent::Disable()
 		movement->SetCoordinates(m_SlickSleepingSpot);
 		auto pos = m_pGrid->GetGridCenter(m_SlickSleepingSpot.x, m_SlickSleepingSpot.y, true);
 		m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
+		m_TilesMoved = 0;
 	}
 }
 
@@ -115,24 +140,36 @@ void SlickMoveComponent::Enable()
 	{
 		m_Disabled = false;
 		m_CurrentInterval = m_Interval;
-		
-		int y = glm::linearRand(0, 1);
-		movement->SetCoordinates({1, y});
-		auto pos = m_pGrid->GetGridCenter(1, y);
+
+		movement->SetCoordinates(movement->GetInitialCoordinates());
+		auto coords = movement->GetCoordinates();
+		auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 		m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
 	}
 }
 
 bool SlickMoveComponent::CheckPlayerHit()
 {
+	if (m_Disabled)
+		return false;
+	
 	if (m_pPlayerPosition->GetCoordinates() == m_pCurrentPosition->GetCoordinates() || 
 		(m_pPlayer2Position && (m_pPlayer2Position->GetCoordinates() == m_pCurrentPosition->GetCoordinates())))
 	{
 		if (m_pPlayer)
 		{
-			ScoreComponent* score = m_pPlayer->GetComponent<ScoreComponent>();
-			if (score)
-				score->AddScore(300);
+			if (!m_HurtPlayer)
+			{
+				ScoreComponent* score = m_pPlayer->GetComponent<ScoreComponent>();
+				if (score)
+					score->AddScore(300);
+			}
+			else
+			{
+				HealthComponent* health = m_pPlayer->GetComponent<HealthComponent>();
+				if (health)
+					health->Damage(1);
+			}
 		}
 		return true;
 	}

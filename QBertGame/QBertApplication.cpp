@@ -116,8 +116,10 @@ void QBertApplication::LoadLevel(int levelNr)
 	if (pPlayer1 && pGrid)
 	{
 		//CreateCoilly(scene, pGrid, pPlayer1, { 1, 0 });
-		CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, true);
-		CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, false);
+		//CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, true);
+		//CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, false);
+		CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, pGrid->GetHeight() - 1 }, false);
+		//CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, 0 }, true);
 	}
 
 	//Create a new HUD
@@ -203,15 +205,43 @@ GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, Gam
 	if (hasCoolGlasses)
 	{
 		sam->AddComponent(new TextureComponent{ "Sprites/Slick.png" });
-		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f });
+		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f, grid->GetWidth() - 1});
 	}
 	else
 	{
 		sam->AddComponent(new TextureComponent{ "Sprites/Sam.png" });
-		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f });
+		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f, grid->GetWidth() - 1 });
 	}
 	scene.Add(sam);
 	return sam;
+}
+
+GameObject* QBertApplication::CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer,
+	const glm::ivec2& coords, bool goingRight)
+{
+	GameObject* ugg = new GameObject{};
+	ugg->AddComponent(new GridPosition{ coords });
+	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
+	ugg->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
+
+	SlickMoveComponent* movement;
+	if (goingRight)
+	{
+		ugg->AddComponent(new TextureComponent{ "Sprites/Ugg.png" });
+		movement = new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f, grid->GetWidth() - 1 };
+		movement->SetMoveDirections({ {-1, 0}, {0, 1} });
+	}
+	else
+	{
+		ugg->AddComponent(new TextureComponent{ "Sprites/Wrongway.png" });
+		movement = new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f, grid->GetWidth() - 1 };
+		movement->SetMoveDirections({ {0, -1}, {-1, -1} });
+	}
+	movement->ReverseTiles(false);
+	movement->HurtPlayer(true);
+	ugg->AddComponent(movement);
+	scene.Add(ugg);
+	return ugg;
 }
 
 GameObject* QBertApplication::CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const

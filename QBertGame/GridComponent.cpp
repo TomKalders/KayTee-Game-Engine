@@ -86,6 +86,10 @@ void GridComponent::ActivateCell(int row, int column)
 			it->second->SetTexture("Sprites/GridBlockActive.png");
 			m_Cells.at(index) = true;
 		}
+		else if (m_TimesSteppedOn.at(index) < m_NrOfTriggers && m_TimesSteppedOn.at(index) > 0)
+		{
+			it->second->SetTexture("Sprites/GridBlockBetween.png");
+		}
 		else
 		{
 			it->second->SetTexture("Sprites/GridBlock.png");
