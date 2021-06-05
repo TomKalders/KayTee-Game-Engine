@@ -35,20 +35,29 @@ PlayerObserver::~PlayerObserver()
 void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* parent)
 {
 	parent;
+	gameObject;
 	
 	if (event == Event::playerDamaged)
 	{
-		auto pHealthText = gameObject->GetComponent<TextComponent>();
+		auto pHealthText = parent->GetComponents<TextComponent>()[0];
 		auto pHealth = m_pPlayer->GetComponent<HealthComponent>();
 		if (pHealthText && pHealth)
 		{
 			int h = pHealth->GetHealth();
-			pHealthText->SetText("Health: " + std::to_string(h));
+			if (!pHealth->IsDead())
+			{
+				pHealthText->SetText("Lives: " + std::to_string(h));
+			}
+			else
+			{
+				//Do something when he dies
+				pHealthText->SetText("Lives: Dead");
+			}
 		}
 	}
 	else if (event == Event::playerScored)
 	{
-		auto pScoreText = gameObject->GetComponent<TextComponent>();
+		auto pScoreText = parent->GetComponents<TextComponent>()[1];
 		auto pScore = m_pPlayer->GetComponent<ScoreComponent>();
 		if (pScoreText && pScore)
 		{

@@ -1,9 +1,13 @@
 #include "QbertPCH.h"
 #include "QBertApplication.h"
 
-//General includes
+//Managers
 #include "SceneManager.h"
 #include "InputManager.h"
+#include "ResourceManager.h"
+#include "HudManager.h"
+
+//General includes
 #include "Renderer.h"
 #include "CustomUIRenderer.h"
 #include "CustomObservers.h"
@@ -14,6 +18,9 @@
 #include "GridComponent.h"
 #include "GridPosition.h"
 #include "CoillyMoveComponent.h"
+
+//Hud elements
+#include "HudElements.h"
 
 //Commands
 #include "CustomCommands.h"
@@ -63,14 +70,16 @@ void QBertApplication::LoadLevel(int levelNr)
 	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json");
 	SceneManager::GetInstance().SetActiveScene(sceneName);
 
-	//Create Enemies
-	GridPosition* playerPos{};
+	//Get Player coordinates and the grid
+	GridPosition* pPlayerPos{};
 	GridComponent* pGrid{};
+	GameObject* pPlayer{};
 	for (GameObject* object : objects)
 	{
 		if (object->GetTag() == "")
 		{
-			playerPos = object->GetComponent<GridPosition>();
+			pPlayer = object;
+			pPlayerPos = object->GetComponent<GridPosition>();
 		}
 		else if (object->GetTag() == "Grid")
 		{
@@ -78,8 +87,28 @@ void QBertApplication::LoadLevel(int levelNr)
 		}
 	}
 
-	if (playerPos && pGrid)
-		CreateCoilly(scene, pGrid, playerPos, { 1, 0 });
+	//Create Enemies
+	if (pPlayerPos && pGrid)
+	{
+		CreateCoilly(scene, pGrid, pPlayerPos, { 1, 0 });
+	}
+
+	//Create HUD
+	auto goScore = new GameObject();
+	goScore->SetTag("HUD");
+	glm::vec3 textColor = { 255, 255, 0 };
+
+	//Create textcomponents for health and  and bind them to the hud.
+	CreateHudElement(goScore, "Lives: 3", { 10, 160 }, textColor);
+	CreateHudElement(goScore, "Score: 0", { 10, 180 }, textColor);
+	
+	//Add observer to check if the health/score text has to be changed
+	auto subject = pPlayer->GetComponent<SubjectComponent>();
+	auto observer = new ObserverComponent{ new PlayerObserver{pPlayer} };
+	goScore->AddComponent( observer );
+	subject->AddObserver(observer);
+	
+	scene.Add(goScore);
 }
 
 void QBertApplication::LoadNextLevel()
@@ -140,6 +169,16 @@ void QBertApplication::AssignControls(GameObject* player, GridComponent* grid, c
 	InputManager::GetInstance().AddCommand(controls.ControllerLeftDown, InputType::released, new MoveLeftDown{ player, grid });
 	InputManager::GetInstance().AddCommand(controls.ControllerRightDown, InputType::released, new MoveRightDown{ player, grid });
 	InputManager::GetInstance().AddCommand(controls.ControllerLeftUp, InputType::released, new MoveLeftUp{ player, grid });
+}
+
+void QBertApplication::CreateHudElement(GameObject* boundObject, const std::string& text, const glm::vec2& position, const glm::vec3& textColor)
+{
+	auto font = ResourceManager::GetInstance().LoadFont("Lingua.otf", 24);
+	TextComponent* healthText = new TextComponent{ text, font };
+	TextElement* textElement = new TextElement{ text, font, position, textColor };
+	healthText->SetTextElement(textElement);
+	boundObject->AddComponent(healthText);
+	HudManager::GetInstance().GetHud()->AddElement(textElement);
 }
 
 std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::string& filename)
@@ -213,16 +252,16 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 						auto pQbert = CreateQbert(scene, pGrid, { row, column }, controls);
 						gameObjects.push_back(pQbert);
 
-						GameObject* playerObserver = new GameObject{};
-						playerObserver->SetTag("PlayerObserver");
-						ObserverComponent* observer = new ObserverComponent{ new PlayerObserver{pQbert} };
-						playerObserver->AddComponent(observer);
+						//GameObject* playerObserver = new GameObject{};
+						//playerObserver->SetTag("PlayerObserver");
+						//ObserverComponent* observer = new ObserverComponent{ new PlayerObserver{pQbert} };
+						//playerObserver->AddComponent(observer);
 						
-						auto subject = pQbert->GetComponent<SubjectComponent>();
-						if (subject)
-							subject->AddObserver(observer);
-						
-						scene.Add(playerObserver);
+						//auto subject = pQbert->GetComponent<SubjectComponent>();
+						//if (subject)
+						//	subject->AddObserver(observer);
+						//
+						//scene.Add(playerObserver);
 					}
 					else
 					{

@@ -35,9 +35,10 @@ void HealthComponent::Damage(int damage)
 
 	if (m_pSubjectComponent)
 	{
-		if (m_Health == 0)
+		if (IsDead())
 		{
 			m_pSubjectComponent->Notify(m_pParent, Event::playerDied);
+			m_pSubjectComponent->Notify(m_pParent, Event::playerDamaged);
 		}
 		else
 		{
@@ -68,4 +69,9 @@ void HealthComponent::SetHealth(int health)
 
 	if (m_Health > m_MaxHealth)
 		m_Health = m_MaxHealth;
+}
+
+bool HealthComponent::IsDead()
+{
+	return m_Health <= 0;
 }

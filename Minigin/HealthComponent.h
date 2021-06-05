@@ -19,6 +19,8 @@ public:
 	int GetHealth() const;
 	void SetHealth(int health);
 
+	bool IsDead();
+
 private:
 	int m_Health;
 	int m_MaxHealth;

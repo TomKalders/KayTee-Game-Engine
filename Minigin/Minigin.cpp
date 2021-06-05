@@ -187,17 +187,6 @@ void Minigin::Run()
 		auto& input = InputManager::GetInstance();
 
 		bool doContinue = true;
-		//while (doContinue)
-		//{
-		//	const auto currentTime = high_resolution_clock::now();
-		//	
-		//	doContinue = input.ProcessInput();
-		//	sceneManager.Update();
-		//	renderer.Render();
-		//	
-		//	auto sleepTime = duration_cast<duration<float>>(currentTime + milliseconds(MsPerFrame) - high_resolution_clock::now());
-		//	this_thread::sleep_for(sleepTime);
-		//}
 		
 		auto lastTime = std::chrono::high_resolution_clock::now();
 		while(doContinue)
@@ -212,9 +201,7 @@ void Minigin::Run()
 
 			lastTime = currentTime;
 		}
-		
 	}
-
 	Cleanup();
 }
 

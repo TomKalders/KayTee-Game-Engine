@@ -24,12 +24,14 @@ public:
 	int GetHeight();
 	int GetWidth();
 	bool ValidGridCoordinate(int row, int column) const;
+	int GetCoordinateIndex(int row, int column) const;
 
 	void SetNrOfTriggers(int nrOfTriggers);
 	void ActivateCell(int row, int column);
+	void DeactivateCell(int row, int column);
 	void RetriggerCells(bool retrigger);
 	bool RetriggerCells() const;
-	bool AllCellsActive() const;
+	bool IsCellActive(int row, int column) const;
 	bool GridComplete() const;
 private:
 	std::map<int, TextureComponent*> m_Sprites;
@@ -47,3 +49,4 @@ private:
 	void CreateGrid();
 	SubjectComponent* m_Subject;
 };
+

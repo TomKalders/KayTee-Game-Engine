@@ -24,7 +24,7 @@ void Move::Execute()
 			auto coords = m_pPosition->GetCoordinates();
 			coords += m_MoveDir;
 			
-			//If grid coodinate invalid, player should fall off.
+			//If grid coodinate invalid, player should fall off/ take damage.
 			if (m_pGrid->ValidGridCoordinate(coords.x, coords.y))
 			{
 				m_pPosition->SetCoordinates(coords);
@@ -32,6 +32,13 @@ void Move::Execute()
 				auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
 				m_pGrid->ActivateCell(coords.x, coords.y);
+
+				if (m_pGrid->IsCellActive(coords.x, coords.y))
+				{
+					auto score = m_pPlayer->GetComponent<ScoreComponent>();
+					if (score)
+						score->AddScore(25);
+				}
 			}
 			else
 			{

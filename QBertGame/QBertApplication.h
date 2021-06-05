@@ -1,6 +1,7 @@
 #pragma once
 #include <Minigin.h>
 #include "Scene.h"
+#include "vld.h"
 
 struct MovementControls;
 class GridComponent;
@@ -25,9 +26,8 @@ private:
 	
 	//Helper Functions
 	void AssignControls(GameObject* player, GridComponent* grid, const MovementControls& controls) const;
+	void CreateHudElement(GameObject* boundObject, const std::string& text, const glm::vec2& position, const glm::vec3& textColor = {1, 1, 1});
 	std::vector<GameObject*> ParseLevel(Scene& scene, const std::string& filename);
-
-	ObserverComponent* m_GameObserver;
 
 	int m_CurrentLevel;
 	int m_MaxLevel;

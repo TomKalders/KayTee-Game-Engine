@@ -72,7 +72,7 @@ void GridComponent::SetNrOfTriggers(int nrOfTriggers)
 void GridComponent::ActivateCell(int row, int column)
 {
 	glm::ivec2 pos = GetGridLocation(row, column);
-	int index = row + column * m_Width;
+	int index = GetCoordinateIndex(row, column);
 
 	auto it = m_Sprites.find(index);
 	if (it != m_Sprites.end())
@@ -92,7 +92,20 @@ void GridComponent::ActivateCell(int row, int column)
 			m_Cells.at(index) = false;
 		}
 	}
+}
 
+void GridComponent::DeactivateCell(int row, int column)
+{
+	glm::ivec2 pos = GetGridLocation(row, column);
+	int index = GetCoordinateIndex(row, column);
+
+	auto it = m_Sprites.find(index);
+	if (it != m_Sprites.end())
+	{
+		m_Cells.at(index) = false;
+		m_TimesSteppedOn.at(index) = 0;
+		it->second->SetTexture("Sprites/GridBlock.png");
+	}
 }
 
 void GridComponent::RetriggerCells(bool retrigger)
@@ -105,9 +118,15 @@ bool GridComponent::RetriggerCells() const
 	return m_Retrigger;
 }
 
-
-bool GridComponent::AllCellsActive() const
+bool GridComponent::IsCellActive(int row, int column) const
 {
+	if (ValidGridCoordinate(row, column))
+	{
+		int index = GetCoordinateIndex(row, column);
+
+		return m_Cells.at(index) && m_TimesSteppedOn.at(index) == m_NrOfTriggers;
+	}
+
 	return false;
 }
 
@@ -151,4 +170,9 @@ bool GridComponent::ValidGridCoordinate(int row, int column) const
 		return false;
 
 	return true;
+}
+
+int GridComponent::GetCoordinateIndex(int row, int column) const
+{
+	return row + column * m_Width;
 }
