@@ -217,6 +217,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
       <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
     </ClCompile>
+    <ClCompile Include="SlickMoveComponent.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="CustomCommands.h" />
@@ -227,6 +228,7 @@ xcopy "$(SolutionDir)Data" "$(OutputPath)Data" /R /Y /I /E</Command>
     <ClInclude Include="CoillyMoveComponent.h" />
     <ClInclude Include="QBertApplication.h" />
     <ClInclude Include="QbertPCH.h" />
+    <ClInclude Include="SlickMoveComponent.h" />
     <ClInclude Include="Structs.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

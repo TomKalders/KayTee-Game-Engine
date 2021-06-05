@@ -15,14 +15,18 @@ public:
 	Hud* GetHud()
 	{
 		if (!m_Hud)
-			std::exception("Hud Not Initialized");
+			throw std::exception("Hud Not Initialized");
 		
 		return m_Hud;
 	};
 
 	void Destroy()
 	{
-		delete m_Hud;
+		if (m_Hud)
+		{
+			delete m_Hud;
+			m_Hud = nullptr;
+		}
 	}
 	
 	void Update(float){};

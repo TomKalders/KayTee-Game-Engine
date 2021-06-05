@@ -1,6 +1,7 @@
 ﻿#include "QbertPCH.h"
 #include "CustomObservers.h"
 #include "Components.h"
+#include "GridPosition.h"
 
 GridObserver::GridObserver(bool& levelCompleteRef)
 	: m_pLevelCompleted(&levelCompleteRef)
@@ -44,15 +45,7 @@ void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* par
 		if (pHealthText && pHealth)
 		{
 			int h = pHealth->GetHealth();
-			if (!pHealth->IsDead())
-			{
-				pHealthText->SetText("Lives: " + std::to_string(h));
-			}
-			else
-			{
-				//Do something when he dies
-				pHealthText->SetText("Lives: Dead");
-			}
+			pHealthText->SetText("Lives: " + std::to_string(h));
 		}
 	}
 	else if (event == Event::playerScored)
@@ -63,6 +56,15 @@ void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* par
 		{
 			int s = pScore->GetScore();
 			pScoreText->SetText("Score: " + std::to_string(s));
+		}
+	}
+	else if (event == Event::playerDied)
+	{
+		auto pHealthText = parent->GetComponents<TextComponent>()[0];
+		if (pHealthText)
+		{
+			//Do something when he dies
+			pHealthText->SetText("Lives: Dead");
 		}
 	}
 }

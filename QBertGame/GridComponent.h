@@ -19,8 +19,8 @@ public:
 	void Initialize() override;
 	void Update(float dt) override;
 	
-	glm::ivec2 GetGridLocation(int row, int column) const;
-	glm::ivec2 GetGridCenter(int row, int column) const;
+	glm::ivec2 GetGridLocation(int row, int column, bool ignoreBounds = false) const;
+	glm::ivec2 GetGridCenter(int row, int column, bool ignoreBounds = false) const;
 	int GetHeight();
 	int GetWidth();
 	bool ValidGridCoordinate(int row, int column) const;
@@ -33,6 +33,7 @@ public:
 	bool RetriggerCells() const;
 	bool IsCellActive(int row, int column) const;
 	bool GridComplete() const;
+
 private:
 	std::map<int, TextureComponent*> m_Sprites;
 	std::map<int, bool> m_Cells;

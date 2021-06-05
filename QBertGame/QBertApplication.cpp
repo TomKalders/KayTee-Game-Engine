@@ -18,6 +18,7 @@
 #include "GridComponent.h"
 #include "GridPosition.h"
 #include "CoillyMoveComponent.h"
+#include "SlickMoveComponent.h"
 
 //Hud elements
 #include "HudElements.h"
@@ -38,6 +39,8 @@ void QBertApplication::GameInitialize()
 	m_CurrentLevel = 1;
 	m_MaxLevel = 4;
 	m_LoadNextLevel = false;
+
+	m_Mode = Mode::normal;
 }
 
 void QBertApplication::GameLoad()
@@ -71,44 +74,88 @@ void QBertApplication::LoadLevel(int levelNr)
 	SceneManager::GetInstance().SetActiveScene(sceneName);
 
 	//Get Player coordinates and the grid
-	GridPosition* pPlayerPos{};
 	GridComponent* pGrid{};
-	GameObject* pPlayer{};
 	for (GameObject* object : objects)
 	{
-		if (object->GetTag() == "")
-		{
-			pPlayer = object;
-			pPlayerPos = object->GetComponent<GridPosition>();
-		}
-		else if (object->GetTag() == "Grid")
+		if (object->GetTag() == "Grid")
 		{
 			pGrid = object->GetComponent<GridComponent>();
 		}
 	}
 
-	//Create Enemies
-	if (pPlayerPos && pGrid)
+	//Create Players
+	GameObject* pPlayer1{};
+	GameObject* pPlayer2{};
+
+	MovementControls controlsP1{};
+	MovementControls controlsP2{
+		SDL_SCANCODE_A,
+		SDL_SCANCODE_W,
+		SDL_SCANCODE_S,
+		SDL_SCANCODE_D
+	};
+	controlsP2.ControllerId = 1;
+	
+	switch (m_Mode)
 	{
-		CreateCoilly(scene, pGrid, pPlayerPos, { 1, 0 });
+	case Mode::normal:
+		pPlayer1 = CreateQbert(scene, pGrid, { 0, 0 }, controlsP1);
+		break;
+
+	case Mode::coop:
+		pPlayer1 = CreateQbert(scene, pGrid, { 6, 0 }, controlsP1);
+		pPlayer2 = CreateQbert(scene, pGrid, { 6, 6 }, controlsP2);
+		break;
+
+	case Mode::versus:
+		pPlayer1 = CreateQbert(scene, pGrid, { 0, 0 }, controlsP1);
+		break;
 	}
 
-	//Create HUD
-	auto goScore = new GameObject();
-	goScore->SetTag("HUD");
+	//Create Enemies
+	if (pPlayer1 && pGrid)
+	{
+		//CreateCoilly(scene, pGrid, pPlayer1, { 1, 0 });
+		CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, true);
+		CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, false);
+	}
+
+	//Create a new HUD
+	HudManager::GetInstance().Destroy();
+	HudManager::GetInstance().CreateHud();
+
+	auto goPlayerStats = new GameObject();
+	goPlayerStats->SetTag("HUD");
 	glm::vec3 textColor = { 255, 255, 0 };
 
-	//Create textcomponents for health and  and bind them to the hud.
-	CreateHudElement(goScore, "Lives: 3", { 10, 160 }, textColor);
-	CreateHudElement(goScore, "Score: 0", { 10, 180 }, textColor);
+	//Create textcomponents for health and score, bind them to the HUD.
+	CreateHudElement(goPlayerStats, "Lives: 3", { 10, 160 }, textColor);
+	CreateHudElement(goPlayerStats, "Score: 0", { 10, 180 }, textColor);
 	
 	//Add observer to check if the health/score text has to be changed
-	auto subject = pPlayer->GetComponent<SubjectComponent>();
-	auto observer = new ObserverComponent{ new PlayerObserver{pPlayer} };
-	goScore->AddComponent( observer );
-	subject->AddObserver(observer);
+	SubjectComponent* subject = nullptr;
+	if (pPlayer1)
+		subject = pPlayer1->GetComponent<SubjectComponent>();
+
+	if (subject)
+	{
+		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer1} };
+		goPlayerStats->AddComponent(observer);
+		subject->AddObserver(observer);
+	}
+
+	subject = nullptr;
+	if (pPlayer2)
+		subject = pPlayer2->GetComponent<SubjectComponent>();
+
+	if (subject)
+	{
+		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer2} };
+		goPlayerStats->AddComponent(observer);
+		subject->AddObserver(observer);
+	}
 	
-	scene.Add(goScore);
+	scene.Add(goPlayerStats);
 }
 
 void QBertApplication::LoadNextLevel()
@@ -134,16 +181,37 @@ GameObject* QBertApplication::CreateQbert(Scene& scene, GridComponent* grid, con
 	return qbert;
 }
 
-GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GridPosition* playerPos,const glm::ivec2& coords)
+GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer,const glm::ivec2& coords)
 {
 	GameObject* coilly = new GameObject{};
 	coilly->AddComponent(new GridPosition{ coords });
 	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
 	coilly->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
 	coilly->AddComponent(new TextureComponent{ "Sprites/CoillyBall.png" });
-	coilly->AddComponent(new CoillyMoveComponent{ grid, playerPos, 1});
+	coilly->AddComponent(new CoillyMoveComponent{ grid, pPlayer, 1});
 	scene.Add(coilly);
 	return coilly;
+}
+
+GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer,
+	const glm::ivec2& coords, bool hasCoolGlasses)
+{
+	GameObject* sam = new GameObject{};
+	sam->AddComponent(new GridPosition{ coords });
+	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
+	sam->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
+	if (hasCoolGlasses)
+	{
+		sam->AddComponent(new TextureComponent{ "Sprites/Slick.png" });
+		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f });
+	}
+	else
+	{
+		sam->AddComponent(new TextureComponent{ "Sprites/Sam.png" });
+		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f });
+	}
+	scene.Add(sam);
+	return sam;
 }
 
 GameObject* QBertApplication::CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const
@@ -232,41 +300,6 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 						subject->AddObserver(observer);
 					
 					scene.Add(levelObserver);
-				}
-				//Read player from file
-				else if (type == "Qbert")
-				{
-					if (pGrid)
-					{
-						int row = gameobject["row"].GetInt();
-						int column = gameobject["column"].GetInt();
-						SDL_Scancode leftup = SDL_Scancode(gameobject["leftup"].GetInt());
-						SDL_Scancode leftdown = SDL_Scancode(gameobject["leftdown"].GetInt());
-						SDL_Scancode rightup = SDL_Scancode(gameobject["rightup"].GetInt());
-						SDL_Scancode rightdown = SDL_Scancode(gameobject["rightdown"].GetInt());
-						int controllerId = gameobject["controllerId"].GetInt();
-
-						MovementControls controls{ leftup, rightup, leftdown, rightdown };
-						controls.ControllerId = controllerId;
-
-						auto pQbert = CreateQbert(scene, pGrid, { row, column }, controls);
-						gameObjects.push_back(pQbert);
-
-						//GameObject* playerObserver = new GameObject{};
-						//playerObserver->SetTag("PlayerObserver");
-						//ObserverComponent* observer = new ObserverComponent{ new PlayerObserver{pQbert} };
-						//playerObserver->AddComponent(observer);
-						
-						//auto subject = pQbert->GetComponent<SubjectComponent>();
-						//if (subject)
-						//	subject->AddObserver(observer);
-						//
-						//scene.Add(playerObserver);
-					}
-					else
-					{
-						std::cout << "Grid not initialized first in json file\n";
-					}
 				}
 			}
 		}

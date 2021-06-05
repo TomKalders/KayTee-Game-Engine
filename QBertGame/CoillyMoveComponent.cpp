@@ -3,16 +3,24 @@
 #include "GridComponent.h"
 #include "GridPosition.h"
 #include "TextureComponent.h"
+#include "HealthComponent.h"
 #include "glm/gtc/random.hpp"
 
-CoillyMoveComponent::CoillyMoveComponent(GridComponent* pGrid, GridPosition* pPlayerPos, float interval)
+CoillyMoveComponent::CoillyMoveComponent(GridComponent* pGrid, GameObject* pPlayer, float interval)
 	: m_pGrid(pGrid)
-	, m_pPlayerPosition(pPlayerPos)
+	, m_pPlayerPosition(nullptr)
+	, m_pPlayer(pPlayer)
 	, m_Interval(interval)
 	, m_CurrentInterval(interval)
 	, m_FallingDown(true)
 	, m_TextureHalfHeight(32)
 {
+}
+
+void CoillyMoveComponent::Initialize()
+{
+	if (m_pPlayer)
+		m_pPlayerPosition = m_pPlayer->GetComponent<GridPosition>();
 }
 
 void CoillyMoveComponent::Update(float dt)
@@ -64,9 +72,9 @@ void CoillyMoveComponent::MoveToPlayer(GridPosition* coillyPos)
 	glm::ivec2 coords = coillyPos->GetCoordinates();
 	auto playerCoords = m_pPlayerPosition->GetCoordinates();
 
-	if (playerCoords == coords)
+	if (CheckPlayerHit(playerCoords, coords))
 		return;
-
+	
 	//Get all the possible neighbouring tiles
 	//and store them in a vector for easier iteration
 	glm::ivec2 leftUp = coords + glm::ivec2(-1, -1);
@@ -110,5 +118,22 @@ void CoillyMoveComponent::MoveToPlayer(GridPosition* coillyPos)
 		coillyPos->SetCoordinates(coords);
 		auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 		m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y) - m_TextureHalfHeight, 0);
+		CheckPlayerHit(playerCoords, coords);
 	}
+}
+
+bool CoillyMoveComponent::CheckPlayerHit(const glm::ivec2& playerCoords, const glm::ivec2& coillyCoords)
+{
+	if (playerCoords == coillyCoords)
+	{
+		if (m_pPlayer)
+		{
+			HealthComponent* health = m_pPlayer->GetComponent<HealthComponent>();
+			if (health)
+				health->Damage(1);
+		}
+		return true;
+	}
+	
+	return false;
 }

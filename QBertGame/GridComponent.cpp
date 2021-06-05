@@ -30,9 +30,9 @@ void GridComponent::Update(float)
 	}
 }
 
-glm::ivec2 GridComponent::GetGridLocation(int row, int column) const
+glm::ivec2 GridComponent::GetGridLocation(int row, int column, bool ignoreBounds) const
 {
-	if (!ValidGridCoordinate(row, column))
+	if (!ignoreBounds && !ValidGridCoordinate(row, column))
 	{
 		std::cout << "Grid Coordinates Out Of Range!\n";
 		return glm::ivec2{ 0, 0 };
@@ -45,9 +45,9 @@ glm::ivec2 GridComponent::GetGridLocation(int row, int column) const
 	return pos;
 }
 
-glm::ivec2 GridComponent::GetGridCenter(int row, int column) const
+glm::ivec2 GridComponent::GetGridCenter(int row, int column, bool ignoreBounds) const
 {
-	glm::ivec2 pos = GetGridLocation(row, column);
+	glm::ivec2 pos = GetGridLocation(row, column, ignoreBounds);
 	pos.x += m_CellSize / 4;
 	pos.y -= m_CellSize / 4;
 	return pos;
@@ -96,15 +96,18 @@ void GridComponent::ActivateCell(int row, int column)
 
 void GridComponent::DeactivateCell(int row, int column)
 {
-	glm::ivec2 pos = GetGridLocation(row, column);
-	int index = GetCoordinateIndex(row, column);
-
-	auto it = m_Sprites.find(index);
-	if (it != m_Sprites.end())
+	if (ValidGridCoordinate(row, column))
 	{
-		m_Cells.at(index) = false;
-		m_TimesSteppedOn.at(index) = 0;
-		it->second->SetTexture("Sprites/GridBlock.png");
+		glm::ivec2 pos = GetGridLocation(row, column);
+		int index = GetCoordinateIndex(row, column);
+
+		auto it = m_Sprites.find(index);
+		if (it != m_Sprites.end())
+		{
+			m_Cells.at(index) = false;
+			m_TimesSteppedOn.at(index) = 0;
+			it->second->SetTexture("Sprites/GridBlock.png");
+		}
 	}
 }
 

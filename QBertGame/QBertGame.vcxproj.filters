@@ -51,6 +51,9 @@
     <ClCompile Include="CoillyMoveComponent.cpp">
       <Filter>Custom Components</Filter>
     </ClCompile>
+    <ClCompile Include="SlickMoveComponent.cpp">
+      <Filter>Custom Components</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="QBertApplication.h">
@@ -78,6 +81,9 @@
       <Filter>Helpers</Filter>
     </ClInclude>
     <ClInclude Include="CoillyMoveComponent.h">
+      <Filter>Custom Components</Filter>
+    </ClInclude>
+    <ClInclude Include="SlickMoveComponent.h">
       <Filter>Custom Components</Filter>
     </ClInclude>
   </ItemGroup>
