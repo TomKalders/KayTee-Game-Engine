@@ -6,7 +6,8 @@ class SceneManager final : public Singleton<SceneManager>
 {
 public:
 	Scene& CreateScene(const std::string& name);
-
+	void RemoveScene(const std::string& name);
+	
 	void Update(float dt);
 	void Render();
 	void SetActiveScene(const std::string& name);

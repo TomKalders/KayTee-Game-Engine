@@ -21,6 +21,7 @@ SlickMoveComponent::SlickMoveComponent(GridComponent* pGrid, GameObject* pPlayer
 	, m_Disabled(true)
 	, m_HurtPlayer(false)
 	, m_ReverseTiles(true)
+	, m_OnPlayer(false)
 	, m_SlickSleepingSpot({999, 999})
 {
 	m_MoveDirections = { {1, 0}, {1, 1} };
@@ -40,7 +41,7 @@ void SlickMoveComponent::Initialize()
 
 void SlickMoveComponent::Update(float dt)
 {
-	if (!m_HurtPlayer && CheckPlayerHit())
+	if (!m_OnPlayer && CheckPlayerHit() && !m_HurtPlayer)
 	{
 		Disable();
 	}
@@ -90,7 +91,7 @@ void SlickMoveComponent::ReverseTiles(bool reverse)
 void SlickMoveComponent::Move()
 {
 	glm::ivec2 coords = m_pCurrentPosition->GetCoordinates();
-	if (!m_HurtPlayer && CheckPlayerHit())
+	if (CheckPlayerHit() && !m_HurtPlayer)
 	{
 		Disable();
 		return;
@@ -105,7 +106,7 @@ void SlickMoveComponent::Move()
 	if (m_ReverseTiles)
 		m_pGrid->DeactivateCell(coords.x, coords.y);
 
-	if (CheckPlayerHit())
+	if (CheckPlayerHit() && !m_HurtPlayer)
 		Disable();
 
 	++m_TilesMoved;
@@ -169,11 +170,13 @@ bool SlickMoveComponent::CheckPlayerHit()
 				HealthComponent* health = m_pPlayer->GetComponent<HealthComponent>();
 				if (health)
 					health->Damage(1);
+				m_OnPlayer = true;
 			}
 		}
 		return true;
 	}
 
+	m_OnPlayer = false;
 	return false;
 }
 

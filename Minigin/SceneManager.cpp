@@ -59,3 +59,22 @@ Scene& SceneManager::CreateScene(const std::string& name)
 	
 	return *scene;
 }
+
+void SceneManager::RemoveScene(const std::string& name)
+{
+	auto it = std::remove_if(m_Scenes.begin(), m_Scenes.end(), [name](const std::shared_ptr<Scene>& scene)
+		{
+			return name == scene->GetName();
+		}
+	);
+
+	m_Scenes.erase(it);
+
+	if (!m_ActiveScene.get())
+	{
+		if (m_Scenes.size() > 0)
+		{
+			m_ActiveScene = m_Scenes[0];
+		}
+	}
+}

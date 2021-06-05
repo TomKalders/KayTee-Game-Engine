@@ -37,9 +37,11 @@ private:
 	bool m_Disabled;
 	bool m_HurtPlayer;
 	bool m_ReverseTiles;
-
+	bool m_OnPlayer;
+	
 	void Move();
 	void Disable();
 	void Enable();
 	bool CheckPlayerHit();
+	
 };
