@@ -2,6 +2,8 @@
 #include "CustomObservers.h"
 #include "Components.h"
 #include "GridPosition.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 
 GridObserver::GridObserver(bool& levelCompleteRef)
 	: m_pLevelCompleted(&levelCompleteRef)
@@ -47,6 +49,14 @@ void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* par
 		{
 			int h = pHealth->GetHealth();
 			pHealthText->SetText("Lives: " + std::to_string(h));
+
+			SDLSoundSystem* m_SoundSystem = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
+			if (m_SoundSystem)
+			{
+				Sound sound{ "Data/Sounds/swear.wav" };
+				SoundID m_Id = m_SoundSystem->AddSound(sound);
+				m_SoundSystem->Play(m_Id, 10.f);
+			}
 		}
 	}
 	else if (event == Event::playerScored)

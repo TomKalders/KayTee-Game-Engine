@@ -43,7 +43,7 @@ private:
 	GameObject* CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2, const glm::ivec2& coords);
 	GameObject* CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords, const MovementControls& controls);
 	GameObject* CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2, const glm::ivec2& coords, bool hasCoolGlasses);
-	GameObject* CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords, bool goingRight);
+	GameObject* CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2, const glm::ivec2& coords, bool goingRight);
 	GameObject* CreateGrid(Scene& scene, const glm::ivec2& gridPos, int gridWidth, int gridHeight, int cellSize, int steps, bool retrigger) const;
 	
 	//Helper Functions

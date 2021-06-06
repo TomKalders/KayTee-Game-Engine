@@ -46,7 +46,7 @@ void Move::Execute()
 				{
 					Sound sound{ "Data/Sounds/jump.wav" };
 					SoundID m_Id = m_SoundSystem->AddSound(sound);
-					m_SoundSystem->Play(m_Id, 1.f);
+					m_SoundSystem->Play(m_Id, 10.f);
 				}
 				
 				if (!m_IsEnemy)

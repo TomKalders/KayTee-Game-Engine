@@ -61,7 +61,10 @@ void QBertApplication::GameUpdate(float)
 	if (m_LoadNextLevel)
 	{
 		if (m_CurrentLevel == m_MaxLevel - 1)
+		{
 			LoadFirstLevel();
+			m_LoadNextLevel = false;
+		}
 		else
 		{
 			LoadNextLevel();
@@ -129,16 +132,16 @@ void QBertApplication::LoadLevel(int levelNr)
 	//Create Enemies
 	if (pPlayer1 && pGrid)
 	{
-		if (settings.useCoilly)
+		if (settings.useCoilly && m_Mode != Mode::versus)
 			CreateCoilly(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 });
 		if (settings.useSlick)
 			CreateSlick(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 }, true);
 		if (settings.useSam)
 			CreateSlick(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 }, false);
 		if (settings.useWrongway)
-			CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, pGrid->GetHeight() - 1 }, false);
+			CreateUgg(scene, pGrid, pPlayer1, pPlayer2, { pGrid->GetWidth() - 1, pGrid->GetHeight() - 1 }, false);
 		if (settings.useUgg)
-			CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, 0 }, true);
+			CreateUgg(scene, pGrid, pPlayer1, pPlayer2, { pGrid->GetWidth() - 1, 0 }, true);
 	}
 
 	//Create a new HUD
@@ -273,7 +276,7 @@ GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, Gam
 	return sam;
 }
 
-GameObject* QBertApplication::CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer,
+GameObject* QBertApplication::CreateUgg(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2,
 	const glm::ivec2& coords, bool goingRight)
 {
 	GameObject* ugg = new GameObject{};
@@ -285,15 +288,19 @@ GameObject* QBertApplication::CreateUgg(Scene& scene, GridComponent* grid, GameO
 	if (goingRight)
 	{
 		ugg->AddComponent(new TextureComponent{ "Sprites/Ugg.png" });
-		movement = new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f, grid->GetWidth() - 1 };
+		movement = new SlickMoveComponent{ grid, pPlayer1, 1.5f, 5.f, grid->GetWidth() - 1 };
 		movement->SetMoveDirections({ {-1, 0}, {0, 1} });
 	}
 	else
 	{
 		ugg->AddComponent(new TextureComponent{ "Sprites/Wrongway.png" });
-		movement = new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f, grid->GetWidth() - 1 };
+		movement = new SlickMoveComponent{ grid, pPlayer1, 1.5f, 10.f, grid->GetWidth() - 1 };
 		movement->SetMoveDirections({ {0, -1}, {-1, -1} });
 	}
+	
+	if (pPlayer2)
+		movement->SetPlayer2(pPlayer2);
+
 	movement->ReverseTiles(false);
 	movement->HurtPlayer(true);
 	ugg->AddComponent(movement);

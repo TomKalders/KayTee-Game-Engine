@@ -12,11 +12,11 @@
             },
             {
                 "type" : "Settings",
-                "coilly" : true,
+                "coilly" : false,
                 "slick" : true,
                 "sam" : false,
                 "Ugg" : true,
-                "wrongway" : false
+                "wrongway" : true
             }
 
         ]
