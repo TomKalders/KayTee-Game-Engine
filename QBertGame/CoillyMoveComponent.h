@@ -18,11 +18,14 @@ public:
 	void Update(float dt) override;
 
 	void IsPlayerControlled(bool controlled);
+	void SetPlayer2(GameObject* pPlayer2);
 private:
 	GridComponent* m_pGrid;
 	GridPosition* m_pPlayerPosition;
+	GridPosition* m_pPlayer2Position;
 	GridPosition* m_pCurrentPosition;
 	GameObject* m_pPlayer;
+	GameObject* m_pPlayer2;
 	float m_Interval;
 	float m_CurrentInterval;
 	//float m_RespawnTime;
@@ -35,7 +38,7 @@ private:
 
 	void Move();
 	void MoveToPlayer(GridPosition* coillyPos);
-	bool CheckPlayerHit(const glm::ivec2& playerCoords, const glm::ivec2& coillyCoords, bool hurtPlayer = true);
+	bool CheckPlayerHit(bool hurtPlayer = true);
 
 	void Disable();
 };

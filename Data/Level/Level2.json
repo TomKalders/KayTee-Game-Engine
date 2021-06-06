@@ -11,15 +11,12 @@
                 "steps" : 2
             },
             {
-                "type" : "Qbert",
-                "row" : 0,
-                "column" : 0,
-
-                "leftup" : 80,
-                "leftdown" : 81,
-                "rightup" : 82,
-                "rightdown" : 79,
-                "controllerId" : 0
+                "type" : "Settings",
+                "coilly" : false,
+                "slick" : false,
+                "sam" : false,
+                "Ugg" : true,
+                "wrongway" : true
             }
 
         ]

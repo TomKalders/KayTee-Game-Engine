@@ -32,9 +32,9 @@ void CoillyMoveComponent::Update(float dt)
 	m_CurrentInterval -= dt;
 
 	if (!m_OnPlayer)
-		m_OnPlayer = CheckPlayerHit(m_pPlayerPosition->GetCoordinates(), m_pCurrentPosition->GetCoordinates());
+		m_OnPlayer = CheckPlayerHit();
 	else
-		m_OnPlayer = CheckPlayerHit(m_pPlayerPosition->GetCoordinates(), m_pCurrentPosition->GetCoordinates(), false);
+		m_OnPlayer = CheckPlayerHit(false);
 	
 	
 	if (m_CurrentInterval <= 0)
@@ -48,6 +48,15 @@ void CoillyMoveComponent::IsPlayerControlled(bool controlled)
 {
 	m_PlayerControlled = controlled;
 }
+
+void CoillyMoveComponent::SetPlayer2(GameObject* pPlayer2)
+{
+	m_pPlayer2 = pPlayer2;
+
+	if (m_pPlayer2)
+		m_pPlayer2Position = m_pPlayer2->GetComponent<GridPosition>();
+}
+
 
 void CoillyMoveComponent::Move()
 {
@@ -91,7 +100,7 @@ void CoillyMoveComponent::MoveToPlayer(GridPosition* coillyPos)
 	glm::ivec2 coords = coillyPos->GetCoordinates();
 	auto playerCoords = m_pPlayerPosition->GetCoordinates();
 
-	if (CheckPlayerHit(playerCoords, coords))
+	if (CheckPlayerHit())
 		return;
 	
 	//Get all the possible neighbouring tiles
@@ -137,13 +146,14 @@ void CoillyMoveComponent::MoveToPlayer(GridPosition* coillyPos)
 		coillyPos->SetCoordinates(coords);
 		auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 		m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y) - m_TextureHalfHeight, 0);
-		CheckPlayerHit(playerCoords, coords);
+		CheckPlayerHit();
 	}
 }
 
-bool CoillyMoveComponent::CheckPlayerHit(const glm::ivec2& playerCoords, const glm::ivec2& coillyCoords, bool hurtPlayer)
+bool CoillyMoveComponent::CheckPlayerHit(bool hurtPlayer)
 {
-	if (playerCoords == coillyCoords)
+	if (m_pPlayerPosition->GetCoordinates() == m_pCurrentPosition->GetCoordinates() ||
+		(m_pPlayer2Position && (m_pPlayer2Position->GetCoordinates() == m_pCurrentPosition->GetCoordinates())))
 	{
 		if (hurtPlayer && m_pPlayer)
 		{

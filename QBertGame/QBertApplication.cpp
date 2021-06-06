@@ -81,7 +81,9 @@ void QBertApplication::LoadLevel(int levelNr)
 	std::string sceneName{ "Level" + std::to_string(levelNr) };
 	sceneManager.RemoveScene(sceneName);
 	Scene& scene = sceneManager.CreateScene(sceneName);
-	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json");
+
+	SpawnSettings settings{};
+	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json", settings);
 	SceneManager::GetInstance().SetActiveScene(sceneName);
 
 	//Get Player coordinates and the grid
@@ -98,14 +100,14 @@ void QBertApplication::LoadLevel(int levelNr)
 	GameObject* pPlayer1{};
 	GameObject* pPlayer2{};
 
-	MovementControls controlsP1{};
-	MovementControls controlsP2{
+	MovementControls controlsP1{
 		SDL_SCANCODE_A,
 		SDL_SCANCODE_W,
 		SDL_SCANCODE_S,
 		SDL_SCANCODE_D
 	};
-	controlsP2.ControllerId = 1;
+	controlsP1.ControllerId = 1;
+	MovementControls controlsP2{};
 	
 	switch (m_Mode)
 	{
@@ -127,11 +129,16 @@ void QBertApplication::LoadLevel(int levelNr)
 	//Create Enemies
 	if (pPlayer1 && pGrid)
 	{
-		//CreateCoilly(scene, pGrid, pPlayer1, { 1, 0 });
-		//CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, true);
-		//CreateSlick(scene, pGrid, pPlayer1, { 1, 0 }, false);
-		CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, pGrid->GetHeight() - 1 }, false);
-		//CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, 0 }, true);
+		if (settings.useCoilly)
+			CreateCoilly(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 });
+		if (settings.useSlick)
+			CreateSlick(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 }, true);
+		if (settings.useSam)
+			CreateSlick(scene, pGrid, pPlayer1, pPlayer2, { 1, 0 }, false);
+		if (settings.useWrongway)
+			CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, pGrid->GetHeight() - 1 }, false);
+		if (settings.useUgg)
+			CreateUgg(scene, pGrid, pPlayer1, { pGrid->GetWidth() - 1, 0 }, true);
 	}
 
 	//Create a new HUD
@@ -206,14 +213,19 @@ GameObject* QBertApplication::CreateQbert(Scene& scene, GridComponent* grid, con
 	return qbert;
 }
 
-GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer,const glm::ivec2& coords)
+GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2,const glm::ivec2& coords)
 {
 	GameObject* coilly = new GameObject{};
 	coilly->AddComponent(new GridPosition{ coords });
 	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
 	coilly->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
 	coilly->AddComponent(new TextureComponent{ "Sprites/CoillyBall.png" });
-	coilly->AddComponent(new CoillyMoveComponent{ grid, pPlayer, 1});
+	auto movement = new CoillyMoveComponent{ grid, pPlayer1, 1.5f };
+	coilly->AddComponent(movement);
+
+	if (pPlayer2)
+		movement->SetPlayer2(pPlayer2);
+
 	scene.Add(coilly);
 	return coilly;
 }
@@ -236,23 +248,27 @@ GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, Ga
 	return coilly;
 }
 
-GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer,
+GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer1, GameObject* pPlayer2,
                                           const glm::ivec2& coords, bool hasCoolGlasses)
 {
 	GameObject* sam = new GameObject{};
 	sam->AddComponent(new GridPosition{ coords });
 	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
 	sam->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
+	SlickMoveComponent* movement;
 	if (hasCoolGlasses)
 	{
 		sam->AddComponent(new TextureComponent{ "Sprites/Slick.png" });
-		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 5.f, grid->GetWidth() - 1});
+		movement = new SlickMoveComponent{ grid, pPlayer1, 1.5f, 5.f, grid->GetWidth() - 1 };
 	}
 	else
 	{
 		sam->AddComponent(new TextureComponent{ "Sprites/Sam.png" });
-		sam->AddComponent(new SlickMoveComponent{ grid, pPlayer, 1.5f, 10.f, grid->GetWidth() - 1 });
+		movement = new SlickMoveComponent{ grid, pPlayer1, 1.5f, 10.f, grid->GetWidth() - 1 };
 	}
+	if (pPlayer2)
+		movement->SetPlayer2(pPlayer2);
+	sam->AddComponent(movement);
 	scene.Add(sam);
 	return sam;
 }
@@ -320,7 +336,7 @@ void QBertApplication::CreateHudElement(GameObject* boundObject, const std::stri
 	HudManager::GetInstance().GetHud()->AddElement(textElement);
 }
 
-std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::string& filename)
+std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::string& filename, SpawnSettings& settings)
 {
 	GridComponent* pGrid = nullptr;
 	std::vector<GameObject*> gameObjects{};
@@ -371,6 +387,14 @@ std::vector<GameObject*> QBertApplication::ParseLevel(Scene& scene, const std::s
 						subject->AddObserver(observer);
 					
 					scene.Add(levelObserver);
+				}
+				else if (type == "Settings")
+				{
+					settings.useCoilly = gameobject["coilly"].GetBool();
+					settings.useSam = gameobject["sam"].GetBool();
+					settings.useSlick = gameobject["slick"].GetBool();
+					settings.useUgg = gameobject["Ugg"].GetBool();
+					settings.useWrongway = gameobject["wrongway"].GetBool();
 				}
 			}
 		}
