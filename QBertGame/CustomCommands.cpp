@@ -3,6 +3,7 @@
 
 #include "GridComponent.h"
 #include "GridPosition.h"
+#include "ServiceLocator.h"
 
 Move::Move(GameObject* pPlayer, GridComponent* pGrid, const glm::ivec2& moveDir, bool IsEnemy)
 	: m_pPlayer(pPlayer)
@@ -40,7 +41,14 @@ void Move::Execute()
 
 				auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y) - (m_IsEnemy * 32), 0);
-
+				SDLSoundSystem* m_SoundSystem = static_cast<SDLSoundSystem*>(ServiceLocator::GetSoundSystem());
+				if (m_SoundSystem)
+				{
+					Sound sound{ "Data/Sounds/jump.wav" };
+					SoundID m_Id = m_SoundSystem->AddSound(sound);
+					m_SoundSystem->Play(m_Id, 1.f);
+				}
+				
 				if (!m_IsEnemy)
 				{
 					m_pGrid->ActivateCell(coords.x, coords.y);

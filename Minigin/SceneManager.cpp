@@ -55,7 +55,8 @@ void SceneManager::RemoveScene(const std::string& name)
 		}
 	);
 
-	m_Scenes.erase(it);
+	if (it != m_Scenes.end())
+		m_Scenes.erase(it);
 
 	if (!m_ActiveScene.get())
 	{

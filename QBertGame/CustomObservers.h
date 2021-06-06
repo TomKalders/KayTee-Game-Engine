@@ -19,7 +19,7 @@ private:
 class PlayerObserver : public Observer
 {
 public:
-	PlayerObserver(GameObject* player);
+	PlayerObserver(GameObject* player, bool& playerDied);
 	virtual ~PlayerObserver();
 	PlayerObserver(const PlayerObserver& other) = delete;
 	PlayerObserver(PlayerObserver&& other) noexcept = delete;
@@ -29,4 +29,5 @@ public:
 	void Notify(GameObject* gameObject, Event event, GameObject* parent) override;
 private:
 	GameObject* m_pPlayer;
+	bool* m_PlayerDied;
 };

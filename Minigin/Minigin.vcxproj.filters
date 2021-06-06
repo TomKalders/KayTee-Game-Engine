@@ -281,10 +281,10 @@
     <ClCompile Include="SDLSoundSystem.cpp">
       <Filter>Framework\Services\Sound</Filter>
     </ClCompile>
-    <ClCompile Include="SoundManager.cpp">
-      <Filter>Game Files</Filter>
-    </ClCompile>
     <ClCompile Include="UIRenderer.cpp">
+      <Filter>Framework\Core</Filter>
+    </ClCompile>
+    <ClCompile Include="SoundManager.cpp">
       <Filter>Framework\Core</Filter>
     </ClCompile>
   </ItemGroup>

@@ -12,6 +12,8 @@
 #include "CustomUIRenderer.h"
 #include "CustomObservers.h"
 #include "Structs.h"
+#include "ServiceLocator.h"
+#include "SDLSoundSystem.h"
 
 //Components
 #include "Components.h"
@@ -35,12 +37,14 @@
 void QBertApplication::GameInitialize()
 {
 	srand(unsigned int(std::time(nullptr)));
-	Renderer::GetInstance().SetUIRenderer(new CustomUIRenderer{});
+	Renderer::GetInstance().SetUIRenderer(new CustomUIRenderer{this});
+	ServiceLocator::RegisterSoundSystem(new SDLSoundSystem{});
+	
 	m_CurrentLevel = 1;
 	m_MaxLevel = 4;
 	m_LoadNextLevel = false;
 
-	m_Mode = Mode::versus;
+	m_Mode = Mode::normal;
 }
 
 void QBertApplication::GameLoad()
@@ -57,19 +61,26 @@ void QBertApplication::GameUpdate(float)
 	if (m_LoadNextLevel)
 	{
 		if (m_CurrentLevel == m_MaxLevel - 1)
-			Quit();
+			LoadFirstLevel();
 		else
 		{
 			LoadNextLevel();
 			m_LoadNextLevel = false;
 		}
 	}
+	if (m_PlayerDied)
+	{
+		m_PlayerDied = false;
+		LoadFirstLevel();
+	}
 }
 
 void QBertApplication::LoadLevel(int levelNr)
 {
+	SceneManager& sceneManager = SceneManager::GetInstance();
 	std::string sceneName{ "Level" + std::to_string(levelNr) };
-	Scene& scene = SceneManager::GetInstance().CreateScene(sceneName);
+	sceneManager.RemoveScene(sceneName);
+	Scene& scene = sceneManager.CreateScene(sceneName);
 	auto objects = ParseLevel(scene, "Data/Level/Level" + std::to_string(levelNr) + ".json");
 	SceneManager::GetInstance().SetActiveScene(sceneName);
 
@@ -142,7 +153,7 @@ void QBertApplication::LoadLevel(int levelNr)
 
 	if (subject)
 	{
-		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer1} };
+		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer1, m_PlayerDied} };
 		goPlayerStats->AddComponent(observer);
 		subject->AddObserver(observer);
 	}
@@ -153,7 +164,7 @@ void QBertApplication::LoadLevel(int levelNr)
 
 	if (subject)
 	{
-		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer2} };
+		auto observer = new ObserverComponent{ new PlayerObserver{pPlayer2, m_PlayerDied} };
 		goPlayerStats->AddComponent(observer);
 		subject->AddObserver(observer);
 	}
@@ -165,6 +176,17 @@ void QBertApplication::LoadNextLevel()
 {
 	++m_CurrentLevel;
 	LoadLevel(m_CurrentLevel);
+}
+
+void QBertApplication::LoadFirstLevel()
+{
+	m_CurrentLevel = 1;
+	LoadLevel(m_CurrentLevel);
+}
+
+void QBertApplication::SetMode(const Mode& mode)
+{
+	m_Mode = mode;
 }
 
 GameObject* QBertApplication::CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const

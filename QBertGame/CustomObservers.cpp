@@ -24,8 +24,9 @@ void GridObserver::Notify(GameObject* gameObject, Event event, GameObject* paren
 	}
 }
 
-PlayerObserver::PlayerObserver(GameObject* player)
+PlayerObserver::PlayerObserver(GameObject* player, bool& playerDied)
 	: m_pPlayer(player)
+	, m_PlayerDied(&playerDied)
 {
 }
 
@@ -65,6 +66,7 @@ void PlayerObserver::Notify(GameObject* gameObject, Event event, GameObject* par
 		{
 			//Do something when he dies
 			pHealthText->SetText("Lives: Dead");
+			*m_PlayerDied = true;
 		}
 	}
 }

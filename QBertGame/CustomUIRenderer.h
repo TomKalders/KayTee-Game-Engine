@@ -1,10 +1,11 @@
 ﻿#pragma once
 #include "UIRenderer.h"
 
+class QBertApplication;
 class CustomUIRenderer final : public UIRenderer
 {
 public:
-	CustomUIRenderer();
+	CustomUIRenderer(QBertApplication* pApp);
 	virtual ~CustomUIRenderer() = default;
 	CustomUIRenderer(const CustomUIRenderer& other) = delete;
 	CustomUIRenderer(CustomUIRenderer&& other) noexcept = delete;
@@ -13,5 +14,5 @@ public:
 
 	void RenderUI() override;
 private:
-	bool m_LoadGamePressed;
+	QBertApplication* m_pApp;
 };

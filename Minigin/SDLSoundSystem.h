@@ -20,7 +20,7 @@ public:
 	SDLSoundSystem& operator=(const SDLSoundSystem& other) = delete;
 	SDLSoundSystem& operator=(SDLSoundSystem&& other) = delete;
 
-	SoundID AddSound(Sound sound);
+	SoundID AddSound(const Sound& sound);
 	void Play(const SoundID id, const float volume) override;
 
 private:
@@ -34,4 +34,7 @@ private:
 
 	void CreateThread();
 	void AddToQueue(SoundID id, float volume);
+	bool DoesSoundExist(const Sound& sound);
+	bool DoesSoundIdExist(SoundID sound);
+	SoundID GetSoundId(const Sound& sound);
 };

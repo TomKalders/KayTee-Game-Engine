@@ -25,6 +25,8 @@ public:
 
 	void LoadLevel(int levelNr);
 	void LoadNextLevel();
+	void LoadFirstLevel();
+	void SetMode(const Mode& mode);
 private:
 	//GameObject Creators
 	GameObject* CreateQbert(Scene& scene, GridComponent* grid, const glm::ivec2& coords, const MovementControls& controls) const;
@@ -42,6 +44,7 @@ private:
 	int m_CurrentLevel;
 	int m_MaxLevel;
 	bool m_LoadNextLevel;
+	bool m_PlayerDied;
 
 	Mode m_Mode;
 };

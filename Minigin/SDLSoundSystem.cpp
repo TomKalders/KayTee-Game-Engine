@@ -22,17 +22,23 @@ SDLSoundSystem::~SDLSoundSystem()
 	Mix_CloseAudio();
 }
 
-SoundID SDLSoundSystem::AddSound(Sound sound)
+SoundID SDLSoundSystem::AddSound(const Sound& sound)
 {
 	std::lock_guard<std::mutex> soundLock{ m_SoundMutex };
-	m_Sounds[m_NextID] = sound;
-	++m_NextID;
-	return m_NextID - 1;
+	if (!DoesSoundExist(sound))
+	{
+		m_Sounds[m_NextID] = sound;
+		++m_NextID;
+		return m_NextID - 1;
+	}
+	else
+		return GetSoundId(sound);
 }
 
 void SDLSoundSystem::Play(const SoundID id, const float volume)
 {
-	AddToQueue(id, volume);
+	if (DoesSoundIdExist(id))
+		AddToQueue(id, volume);
 }
 
 void SDLSoundSystem::CreateThread()
@@ -73,4 +79,37 @@ void SDLSoundSystem::AddToQueue(SoundID id, float volume)
 {
 	std::lock_guard<std::mutex> soundLock{ m_SoundMutex };
 	m_SoundQueue.push(std::pair<SoundID, float>(id, volume));
+}
+
+bool SDLSoundSystem::DoesSoundExist(const Sound& sound)
+{
+	auto it = std::find_if(m_Sounds.begin(), m_Sounds.end(), [sound](const std::pair<SoundID, Sound>& pair)
+		{
+			return pair.second.path == sound.path;
+		}
+	);
+
+	if (it == m_Sounds.end())
+		return false;
+
+	return true;
+}
+
+bool SDLSoundSystem::DoesSoundIdExist(SoundID sound)
+{
+	return m_Sounds.find(sound) != m_Sounds.end();
+}
+
+SoundID SDLSoundSystem::GetSoundId(const Sound& sound)
+{
+	auto it = std::find_if(m_Sounds.begin(), m_Sounds.end(), [sound](const std::pair<SoundID, Sound>& pair)
+		{
+			return pair.second.path == sound.path;
+		}
+	);
+
+	if (it != m_Sounds.end())
+		return it->first;
+
+	return 0;
 }

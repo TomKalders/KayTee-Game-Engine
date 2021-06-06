@@ -1,15 +1,30 @@
 ﻿#include "QbertPCH.h"
 #include "CustomUIRenderer.h"
 #include "imgui.h"
+#include "QBertApplication.h"
 
-CustomUIRenderer::CustomUIRenderer()
-	: m_LoadGamePressed(false)
+CustomUIRenderer::CustomUIRenderer(QBertApplication* pApp)
+	: m_pApp(pApp)
 {
 }
 
 void CustomUIRenderer::RenderUI()
 {
 	ImGui::Begin("Controls");
-	m_LoadGamePressed = ImGui::Button("Test", { 50, 20 });
+	if (ImGui::Button("Singleplayer"))
+	{
+		m_pApp->SetMode(Mode::normal);
+		m_pApp->LoadFirstLevel();
+	}
+	if (ImGui::Button("Co-op"))
+	{
+		m_pApp->SetMode(Mode::coop);
+		m_pApp->LoadFirstLevel();
+	}
+	if (ImGui::Button("Versus"))
+	{
+		m_pApp->SetMode(Mode::versus);
+		m_pApp->LoadFirstLevel();
+	}
 	ImGui::End();
 }
