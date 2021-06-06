@@ -4,25 +4,12 @@
 
 void SceneManager::Update(float dt)
 {
-	//if (dt)
-
 	m_ActiveScene->Update(dt);
-	//for(auto& scene : m_Scenes)
-	//{
-	//	if (scene->IsActive())
-	//		scene->Update(dt);
-	//}
 }
 
 void SceneManager::Render()
 {
 	m_ActiveScene->Render();
-	
-	//for (const auto& scene : m_Scenes)
-	//{
-	//	if (scene->IsActive())
-	//		scene->Render();
-	//}
 }
 
 void SceneManager::SetActiveScene(const std::string& name)

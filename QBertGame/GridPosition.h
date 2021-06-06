@@ -13,8 +13,12 @@ public:
 
 	glm::ivec2 GetCoordinates();
 	glm::ivec2 GetInitialCoordinates();
+	bool CanMove();
 	void SetCoordinates(const glm::ivec2& coordinates);
+	void CanMove(bool move);
+
 private:
 	glm::ivec2 m_Coordinates;
 	glm::ivec2 m_InitialCoordinates;
+	bool m_CanMove;
 };

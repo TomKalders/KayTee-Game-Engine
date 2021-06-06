@@ -9,10 +9,12 @@
 CoillyMoveComponent::CoillyMoveComponent(GridComponent* pGrid, GameObject* pPlayer, float interval)
 	: m_pGrid(pGrid)
 	, m_pPlayerPosition(nullptr)
+	, m_pCurrentPosition(nullptr)
 	, m_pPlayer(pPlayer)
 	, m_Interval(interval)
 	, m_CurrentInterval(interval)
 	, m_FallingDown(true)
+	, m_PlayerControlled(false)
 	, m_TextureHalfHeight(32)
 {
 }
@@ -21,11 +23,20 @@ void CoillyMoveComponent::Initialize()
 {
 	if (m_pPlayer)
 		m_pPlayerPosition = m_pPlayer->GetComponent<GridPosition>();
+
+	m_pCurrentPosition = m_pParent->GetComponent<GridPosition>();
 }
 
 void CoillyMoveComponent::Update(float dt)
 {
 	m_CurrentInterval -= dt;
+
+	if (!m_OnPlayer)
+		m_OnPlayer = CheckPlayerHit(m_pPlayerPosition->GetCoordinates(), m_pCurrentPosition->GetCoordinates());
+	else
+		m_OnPlayer = CheckPlayerHit(m_pPlayerPosition->GetCoordinates(), m_pCurrentPosition->GetCoordinates(), false);
+	
+	
 	if (m_CurrentInterval <= 0)
 	{
 		Move();
@@ -33,22 +44,28 @@ void CoillyMoveComponent::Update(float dt)
 	}
 }
 
+void CoillyMoveComponent::IsPlayerControlled(bool controlled)
+{
+	m_PlayerControlled = controlled;
+}
+
 void CoillyMoveComponent::Move()
 {
-	auto movement = m_pParent->GetComponent<GridPosition>();
-	if (!movement)
+	//auto movement = m_pParent->GetComponent<GridPosition>();
+	if (!m_pCurrentPosition)
 		return;
 	
 	if (m_FallingDown)
 	{
-		if (movement->GetCoordinates().x < (m_pGrid->GetHeight() - 1))
+		m_pCurrentPosition->CanMove(false);
+		if (m_pCurrentPosition->GetCoordinates().x < (m_pGrid->GetHeight() - 1))
 		{
-			glm::ivec2 coords = movement->GetCoordinates();
+			glm::ivec2 coords = m_pCurrentPosition->GetCoordinates();
 			int rand = glm::linearRand(0, 1);
 			coords.x += 1;
 			coords.y += rand;
 
-			movement->SetCoordinates(coords);
+			m_pCurrentPosition->SetCoordinates(coords);
 			auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
 			m_pParent->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
 		}
@@ -59,11 +76,13 @@ void CoillyMoveComponent::Move()
 			auto textureComponent = m_pParent->GetComponent<TextureComponent>();
 			if (textureComponent)
 				textureComponent->SetTexture("Sprites/Coilly.png");
+			m_pCurrentPosition->CanMove(true);
 		}
 	}
 	else
 	{
-		MoveToPlayer(movement);
+		if (!m_PlayerControlled)
+			MoveToPlayer(m_pCurrentPosition);
 	}
 }
 
@@ -122,11 +141,11 @@ void CoillyMoveComponent::MoveToPlayer(GridPosition* coillyPos)
 	}
 }
 
-bool CoillyMoveComponent::CheckPlayerHit(const glm::ivec2& playerCoords, const glm::ivec2& coillyCoords)
+bool CoillyMoveComponent::CheckPlayerHit(const glm::ivec2& playerCoords, const glm::ivec2& coillyCoords, bool hurtPlayer)
 {
 	if (playerCoords == coillyCoords)
 	{
-		if (m_pPlayer)
+		if (hurtPlayer && m_pPlayer)
 		{
 			HealthComponent* health = m_pPlayer->GetComponent<HealthComponent>();
 			if (health)
@@ -136,4 +155,17 @@ bool CoillyMoveComponent::CheckPlayerHit(const glm::ivec2& playerCoords, const g
 	}
 	
 	return false;
+}
+
+void CoillyMoveComponent::Disable()
+{
+	auto textureComponent = m_pParent->GetComponent<TextureComponent>();
+	if (textureComponent)
+		textureComponent->SetTexture("Sprites/CoillyBall.png");
+
+	auto movement = m_pParent->GetComponent<GridPosition>();
+	if (movement)
+		movement->SetCoordinates({ 999, 999 });
+
+	m_Disabled;
 }

@@ -4,12 +4,18 @@
 #include "GridComponent.h"
 #include "GridPosition.h"
 
-Move::Move(GameObject* pPlayer, GridComponent* pGrid, const glm::ivec2& moveDir)
+Move::Move(GameObject* pPlayer, GridComponent* pGrid, const glm::ivec2& moveDir, bool IsEnemy)
 	: m_pPlayer(pPlayer)
 	, m_pGrid(pGrid)
 	, m_pPosition(nullptr)
 	, m_MoveDir(moveDir)
+	, m_IsEnemy(IsEnemy)
 {
+}
+
+void Move::IsEnemy(bool enemy)
+{
+	m_IsEnemy = enemy;
 }
 
 void Move::Execute()
@@ -23,6 +29,9 @@ void Move::Execute()
 		{
 			auto coords = m_pPosition->GetCoordinates();
 			coords += m_MoveDir;
+
+			if (!m_pPosition->CanMove())
+				return;
 			
 			//If grid coodinate invalid, player should fall off/ take damage.
 			if (m_pGrid->ValidGridCoordinate(coords.x, coords.y))
@@ -30,14 +39,18 @@ void Move::Execute()
 				m_pPosition->SetCoordinates(coords);
 
 				auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
-				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
-				m_pGrid->ActivateCell(coords.x, coords.y);
+				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y) - (m_IsEnemy * 32), 0);
 
-				if (m_pGrid->IsCellActive(coords.x, coords.y))
+				if (!m_IsEnemy)
 				{
-					auto score = m_pPlayer->GetComponent<ScoreComponent>();
-					if (score)
-						score->AddScore(25);
+					m_pGrid->ActivateCell(coords.x, coords.y);
+
+					if (m_pGrid->IsCellActive(coords.x, coords.y))
+					{
+						auto score = m_pPlayer->GetComponent<ScoreComponent>();
+						if (score)
+							score->AddScore(25);
+					}
 				}
 			}
 			else
@@ -51,30 +64,30 @@ void Move::Execute()
 				coords = m_pPosition->GetInitialCoordinates();
 				m_pPosition->SetCoordinates(coords);
 				auto pos = m_pGrid->GetGridCenter(coords.x, coords.y);
-				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y), 0);
+				m_pPlayer->GetComponent<Transform>()->SetPosition(float(pos.x), float(pos.y) - (m_IsEnemy * 32), 0);
 			}
 		}
 	}
 }
 
-MoveRightUp::MoveRightUp(GameObject* pPlayer, GridComponent* pGrid)
-	: Move(pPlayer, pGrid, {-1, 0})
+MoveRightUp::MoveRightUp(GameObject* pPlayer, GridComponent* pGrid, bool isEnemy)
+	: Move(pPlayer, pGrid, {-1, 0}, isEnemy)
 {
 	
 }
 
-MoveLeftDown::MoveLeftDown(GameObject* pPlayer, GridComponent* pGrid)
-	: Move(pPlayer, pGrid, {1, 0})
+MoveLeftDown::MoveLeftDown(GameObject* pPlayer, GridComponent* pGrid, bool isEnemy)
+	: Move(pPlayer, pGrid, {1, 0}, isEnemy)
 {
 }
 
-::MoveLeftUp::MoveLeftUp(GameObject* pPlayer, GridComponent* pGrid)
-	: Move(pPlayer, pGrid, { -1, -1 })
+::MoveLeftUp::MoveLeftUp(GameObject* pPlayer, GridComponent* pGrid, bool isEnemy)
+	: Move(pPlayer, pGrid, { -1, -1 }, isEnemy)
 {
 }
 
-MoveRightDown::MoveRightDown(GameObject* pPlayer, GridComponent* pGrid)
-	: Move(pPlayer, pGrid, { 1, 1 })
+MoveRightDown::MoveRightDown(GameObject* pPlayer, GridComponent* pGrid, bool isEnemy)
+	: Move(pPlayer, pGrid, { 1, 1 }, isEnemy)
 {
 }
 

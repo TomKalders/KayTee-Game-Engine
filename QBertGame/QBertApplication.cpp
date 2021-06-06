@@ -40,7 +40,7 @@ void QBertApplication::GameInitialize()
 	m_MaxLevel = 4;
 	m_LoadNextLevel = false;
 
-	m_Mode = Mode::normal;
+	m_Mode = Mode::versus;
 }
 
 void QBertApplication::GameLoad()
@@ -109,6 +109,7 @@ void QBertApplication::LoadLevel(int levelNr)
 
 	case Mode::versus:
 		pPlayer1 = CreateQbert(scene, pGrid, { 0, 0 }, controlsP1);
+		pPlayer2 = CreateCoilly(scene, pGrid, pPlayer1, { 1, 0 }, controlsP2);
 		break;
 	}
 
@@ -195,8 +196,26 @@ GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, Ga
 	return coilly;
 }
 
+GameObject* QBertApplication::CreateCoilly(Scene& scene, GridComponent* grid, GameObject* pPlayer, const glm::ivec2& coords,
+	const MovementControls& controls)
+{
+	GameObject* coilly = new GameObject{};
+	coilly->AddComponent(new GridPosition{ coords });
+	glm::vec2 position = grid->GetGridCenter(coords.x, coords.y);
+	coilly->GetComponent<Transform>()->SetPosition(position.x, position.y, 0);
+	coilly->AddComponent(new TextureComponent{ "Sprites/CoillyBall.png" });
+	auto movement = new CoillyMoveComponent{ grid, pPlayer, 1 };
+	coilly->AddComponent(movement);
+	movement->IsPlayerControlled(true);
+	scene.Add(coilly);
+
+	AssignControls(coilly, grid, controls, true);
+	
+	return coilly;
+}
+
 GameObject* QBertApplication::CreateSlick(Scene& scene, GridComponent* grid, GameObject* pPlayer,
-	const glm::ivec2& coords, bool hasCoolGlasses)
+                                          const glm::ivec2& coords, bool hasCoolGlasses)
 {
 	GameObject* sam = new GameObject{};
 	sam->AddComponent(new GridPosition{ coords });
@@ -256,17 +275,17 @@ GameObject* QBertApplication::CreateGrid(Scene& scene, const glm::ivec2& gridPos
 	return grid;
 }
 
-void QBertApplication::AssignControls(GameObject* player, GridComponent* grid, const MovementControls& controls) const
+void QBertApplication::AssignControls(GameObject* player, GridComponent* grid, const MovementControls& controls, bool isEnemy) const
 {
-	InputManager::GetInstance().AddCommand(controls.RightUp, InputType::pressed, new MoveRightUp{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.LeftDown, InputType::pressed, new MoveLeftDown{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.RightDown, InputType::pressed, new MoveRightDown{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.LeftUp, InputType::pressed, new MoveLeftUp{ player, grid });
+	InputManager::GetInstance().AddCommand(controls.RightUp, InputType::pressed, new MoveRightUp{ player, grid, isEnemy});
+	InputManager::GetInstance().AddCommand(controls.LeftDown, InputType::pressed, new MoveLeftDown{ player, grid, isEnemy });
+	InputManager::GetInstance().AddCommand(controls.RightDown, InputType::pressed, new MoveRightDown{ player, grid, isEnemy });
+	InputManager::GetInstance().AddCommand(controls.LeftUp, InputType::pressed, new MoveLeftUp{ player, grid, isEnemy });
 
-	InputManager::GetInstance().AddCommand(controls.ControllerRightUp, InputType::released, new MoveRightUp{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.ControllerLeftDown, InputType::released, new MoveLeftDown{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.ControllerRightDown, InputType::released, new MoveRightDown{ player, grid });
-	InputManager::GetInstance().AddCommand(controls.ControllerLeftUp, InputType::released, new MoveLeftUp{ player, grid });
+	InputManager::GetInstance().AddCommand(controls.ControllerRightUp, InputType::released, new MoveRightUp{ player, grid, isEnemy });
+	InputManager::GetInstance().AddCommand(controls.ControllerLeftDown, InputType::released, new MoveLeftDown{ player, grid, isEnemy });
+	InputManager::GetInstance().AddCommand(controls.ControllerRightDown, InputType::released, new MoveRightDown{ player, grid, isEnemy });
+	InputManager::GetInstance().AddCommand(controls.ControllerLeftUp, InputType::released, new MoveLeftUp{ player, grid, isEnemy });
 }
 
 void QBertApplication::CreateHudElement(GameObject* boundObject, const std::string& text, const glm::vec2& position, const glm::vec3& textColor)
